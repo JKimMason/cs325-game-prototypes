@@ -2,10 +2,15 @@
 	body
 	{
     	color: #777;
-    	font-family: "Avenir", Verdana, sans-serif;
+    	font-family: 'Merriweather', 'Helvetica Neue', Arial, sans-serif;
 	}
+
 	#readme
 	{
-   		margin-top: 10px;
+   		margin-top: 50px;
 	}
+
+	#readme.h2
+	{
+		color: #00FFFF;
 </style>
