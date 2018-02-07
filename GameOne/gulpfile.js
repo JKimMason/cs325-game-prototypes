@@ -1,19 +1,39 @@
 var gulp = require('gulp');
+// create new instance of BrowserSync
 var browserSync = require('browser-sync').create();
 
-// Configure the browserSync task
-gulp.task('browserSync', function(){
+gulp.task('watch', function(gulpCallback) {
   browserSync.init({
-    server: {
-      baseDir: 'src/'
-    },
-  })
+    // serve out of app/
+    server: './src/',
+    // launch default browser as soon as server is up
+    open: true
+  }, function callback() {
+    // (server is now up)
 
-  gulp.watch('src/*.html', browserSync.reload);
-  gulp.watch('src/css/style.css', browserSync.reload);
-  gulp.watch('src/js/*.js', browserSync.reload);
-})
+    // watch html and reload browsers when it changes
+    gulp.watch('src/index.html', browserSync.reload);
 
-// Default task
-gulp.task('default', ['browserSync']);
+    // watch css and stream to BrowserSync when it changes
+    gulp.watch('src/css/*', function() {
+      // grab css files and send them into browserSync.stream
+      // this injects the css into the page
+      gulp.src('src/css/*')
+        .pipe(browserSync.stream());
+    });
 
+    // watch js and stream to BrowserSync when it changes
+    gulp.watch('src/js/*', function() {
+      // grab js files and send them into browserSync.stream
+      // this injects the js into the page
+      gulp.src('src/js/*')
+        .pipe(browserSync.stream());
+    });
+    
+    // notify gulp that this task is done
+    gulpCallback();
+  });
+});
+
+
+gulp.task('default', ['watch']);
