@@ -20,7 +20,7 @@ gulp.task('watch', function(gulpCallback) {
       // this injects the css into the page
       gulp.src('src/css/*')
         .pipe(browserSync.stream());
-    });
+    }); 
 
     // watch js and stream to BrowserSync when it changes
     gulp.watch('src/js/*', function() {
@@ -29,11 +29,10 @@ gulp.task('watch', function(gulpCallback) {
       gulp.src('src/js/*')
         .pipe(browserSync.stream());
     });
-    
-    // notify gulp that this task is done
     gulpCallback();
   });
 });
 
-
 gulp.task('default', ['watch']);
+
+
