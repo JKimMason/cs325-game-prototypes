@@ -1,2 +1,0 @@
-# Digital Assignment 1
-
