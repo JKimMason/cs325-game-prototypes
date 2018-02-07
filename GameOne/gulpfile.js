@@ -5,7 +5,7 @@ var browserSync = require('browser-sync').create();
 gulp.task('browserSync', function() {
   browserSync.init({
     server: {
-      baseDir: ['main', 'js', 'css']
+      baseDir: ['src']
     },
   })
   gulp.watch('main/*.html', browserSync.reload);
