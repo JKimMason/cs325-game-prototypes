@@ -1,12 +1,9 @@
 "use strict";
 
 BasicGame.Preloader = function (game) {
-
 	this.background = null;
 	this.preloadBar = null;
-
 	this.ready = false;
-
 };
 
 BasicGame.Preloader.prototype = {
