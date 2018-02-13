@@ -2,3 +2,8 @@
 
 
 
+## Themes:
+- Chicken
+- Person who is actually a robot
+- Lost all identification
+- One half of a ripped love letter
