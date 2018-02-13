@@ -1,3 +1,5 @@
 *.txt
 GameOne/node_modules
 GameOne/package-lock.json
+GameTwo/node_modules
+GameTwo/package-lock.json
