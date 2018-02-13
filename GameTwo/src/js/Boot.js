@@ -1,4 +1,7 @@
 "use strict";
+ 
+/* Adjusts stage size and scale */
+
 
 var BasicGame = {};
 
@@ -50,3 +53,4 @@ BasicGame.Boot.prototype = {
     }
 
 };
+
