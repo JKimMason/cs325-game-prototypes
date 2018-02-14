@@ -20,48 +20,65 @@ BasicGame.Game = function (game) {
     this.particles; //  the particle manager (Phaser.Particles)
     this.physics;   //  the physics manager (Phaser.Physics)
     this.rnd;       //  the repeatable random number generator (Phaser.RandomDataGenerator)
-    
+
     //  You can use any of these from any function within this State.
     //  But do consider them as being 'reserved words', i.e. don't create a property for your own game called "world" or you'll over-write the world reference.
     */
-    
+
     // For optional clarity, you can initialize
     // member variables here. Otherwise, you will do it in create().
     this.bouncy = null;
+    this.mysprite = null;
 };
 
 BasicGame.Game.prototype = {
-
     create: function () {
 
+        this.mysprite = this.game.add.sprite(45, 300, 'chickenTrump');
+        //mysprite.frame = 3;
         //  Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
-        
+
         // Create a sprite at the center of the screen using the 'logo' image.
         this.bouncy = this.game.add.sprite( this.game.world.centerX, this.game.world.centerY, 'logo' );
-        // Anchor the sprite at its center, as opposed to its top-left corner.
-        // so it will be truly centered.
+        // // Anchor the sprite at its center, as opposed to its top-left corner.
+        // // so it will be truly centered.
         this.bouncy.anchor.setTo( 0.5, 0.5 );
-        
+
         // Turn on the arcade physics engine for this sprite.
         this.game.physics.enable( this.bouncy, Phaser.Physics.ARCADE );
         // Make it bounce off of the world bounds.
         this.bouncy.body.collideWorldBounds = true;
-        
         // Add some text using a CSS style.
         // Center it in X, and position its top 15 pixels from the top of the world.
-        var style = { font: "25px Verdana", fill: "#9999ff", align: "center" };
-        var text = this.game.add.text( this.game.world.centerX, 15, "Build something amazing.", style );
+        var style = { font: "25px Verdana", fill: "#666666", align: "center" };
+        var text = this.game.add.text( this.game.world.centerX, 15, "RUN!", style );
         text.anchor.setTo( 0.5, 0.0 );
-        
-        // When you click on the sprite, you go back to the MainMenu.
-        this.bouncy.inputEnabled = true;
-        this.bouncy.events.onInputDown.add( function() { this.quitGame(); }, this );
+
+        // // When you click on the sprite, you go back to the MainMenu.
+        //this.bouncy.inputEnabled = true;
+        //this.bouncy.events.onInputDown.add( function() { this.quitGame(); }, this );
+
+
+
+        // Add tilemap and tileset image
+        // this.map = this.game.add.tilemap('tilemap');
+        // this.map.addTilesetImage('tiles128', 'tiles');
+        //
+        // //Change the background colour
+        // this.game.stage.backgroundColor = "#a9f0ff";
+        // // Add goundLayer
+        // this.groundLayer = this.map.createLayer('GroundLayer');
+        // // Set tiles can collide
+        // //this.map.setCollisonBetween(1,100,true, 'GroundLayer');
+        //
+        // // Change world size to match size of this groundLayer
+        // this.groundLayer.resizeWorld();
     },
 
     update: function () {
 
         //  Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
-        
+
         // Accelerate the 'logo' sprite towards the cursor,
         // accelerating at 500 pixels/second and moving no faster than 500 pixels/second
         // in X or Y.
