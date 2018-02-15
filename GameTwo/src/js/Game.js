@@ -1,48 +1,27 @@
 "use strict";
 
 BasicGame.Game = function (game) {
-
-    //  When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
-    /*
-    this.game;      //  a reference to the currently running game (Phaser.Game)
-    this.add;       //  used to add sprites, text, groups, etc (Phaser.GameObjectFactory)
-    this.camera;    //  a reference to the game camera (Phaser.Camera)
-    this.cache;     //  the game cache (Phaser.Cache)
-    this.input;     //  the global input manager. You can access this.input.keyboard, this.input.mouse, as well from it. (Phaser.Input)
-    this.load;      //  for preloading assets (Phaser.Loader)
-    this.math;      //  lots of useful common math operations (Phaser.Math)
-    this.sound;     //  the sound manager - add a sound, play one, set-up markers, etc (Phaser.SoundManager)
-    this.stage;     //  the game stage (Phaser.Stage)
-    this.time;      //  the clock (Phaser.Time)
-    this.tweens;    //  the tween manager (Phaser.TweenManager)
-    this.state;     //  the state manager (Phaser.StateManager)
-    this.world;     //  the game world (Phaser.World)
-    this.particles; //  the particle manager (Phaser.Particles)
-    this.physics;   //  the physics manager (Phaser.Physics)
-    this.rnd;       //  the repeatable random number generator (Phaser.RandomDataGenerator)
-
-    //  You can use any of these from any function within this State.
-    //  But do consider them as being 'reserved words', i.e. don't create a property for your own game called "world" or you'll over-write the world reference.
-    */
-
-    // For optional clarity, you can initialize
-    // member variables here. Otherwise, you will do it in create().
-    //this.map = null;
     this.cTrump = null;
+    this.kfc = null;
+    this.mcdonald = null;
+    this.gameMusic = null;
+    this.chickenDane = null;
 };
 
 BasicGame.Game.prototype = {
     create: function () {
+        // Music
+        this.gameMusic = this.add.audio('gameMusic');
+        this.gameMusic.play();
         // Set FPS
         this.game.time.desiredFps = 60;
         // Background picture:
         this.game.add.tileSprite(0, 0, 1000, 600, 'background');
-        //this.game.load.image('background');
         //Change the background colour
        this.game.stage.backgroundColor = "#a9f0ff";
        // Add chicken trump
        this.cTrump = this.game.add.sprite( this.game.world.centerX, this.game.world.centerY, 'chickenTrump' );
-       //this.cTrump.frame =0;
+       // Add trump animaiton movements
        this.cTrump.animations.add('down', [0,1,2,3,4,5], 15, true);
        this.cTrump.animations.add('right', [6,7,8,9,10,11],15, true);
        this.cTrump.animations.add('up', [12,13,14,15,16,17], 15, true);
@@ -51,20 +30,47 @@ BasicGame.Game.prototype = {
         // Turn on the arcade physics engine for this sprite.
         this.game.physics.enable( this.cTrump, Phaser.Physics.ARCADE );
         // Make it bounce off of the world bounds.
-        this.cTrump.body.collideWorldBounds = true;
+        //this.cTrump.body.collideWorldBounds = true;
 
-        // Follow
-        this.game.camera.follow(this.cTrump);
+        // Video:
+        //this.chickenDance = this.add.video('chickenDance');
+        //this.chickenDance.onPlay.addOnce(start, this);
+        //this.addVid = this.chickenDance.addToWorld(400, 300, 0.5, 0,5);
 
-        // CSS style to text
-        var style = { font: "25px Verdana", fill: "#666666", align: "center" };
-        var text = this.game.add.text( this.game.world.centerX, 15, "RUN!", style );
-        text.anchor.setTo( 0.5, 0.0 );
+        this.kfc= this.game.add.group();
+        this.mcdonald = this.game.add.group();
+        this.kfc.enableBody = true;
+        this.mcdonald.enableBody = true;
+
+        // Text at top
+       var topTextStyle = { font: "25px Verdana", fill: "#666666", align: "center" };
+       var topText = this.game.add.text( this.game.world.centerX, 15, "Collect your prize!", topTextStyle );
+       topText.anchor.setTo( 0.5, 0.0 );
+       // Tutorial text at bottom
+       var tutorialTextStyle = { font: "25px Verdana", fill: "#666666", align: "center" };
+       var tutorial = this.game.add.text(280, 500, "Use the arrow keys!", tutorialTextStyle );
+       // Score
+       var score = 0;
+       var scoreTextStyle = { font: "25px Verdana", fill: "#000000", align: "center" };
+       var scoreText = this.game.add.text(25, 25, 'Score: 0' , scoreTextStyle );
+
+       // var roller;
+       // var x;
+       // var y;
+      // var createKFC = this.kfc.create(x,y, 'kfc');
+
     },
 
     update: function () {
+        var hitPlatformKFC = this.game.physics.arcade.collide(this.cTrump, this.kfc);
+        var hitPlatformMCD = this.game.physics.arcade.collide(this.cTrump, this.mcdonald);
+
+        // Randomizer
+        var roller = this.game.rnd.integerInRange(0, 10);
+        var x = this.game.rnd.integerInRange(0, 800);
+        var y = this.game.rnd.integerInRange(0, 600);
+
         // Control
-        //this.cTrump.animations.stop();
         if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT))
         {
                 this.cTrump.animations.play('left');
@@ -89,6 +95,7 @@ BasicGame.Game.prototype = {
                 this.cTrump.y += 4;
                 this.cTrump.animations.play('down');
         }
+        // Stop animation
         else if ((!this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) &&
                     (!this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) &&
                     (!this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) &&
@@ -96,12 +103,37 @@ BasicGame.Game.prototype = {
         {
             this.cTrump.animations.stop();
         }
+
+        if(roller>0 && roller<6)
+        {
+            //this.kfc = this.game.add.sprite(x,y,'kfc');
+            var createKFC = this.kfc.create(x,y, 'kfc');
+            //this.kfc.kill();
+            // score += 10;
+            // scoreText.text = 'Score: ' + score;
+        }
+        else if(roller>5 && roller<10)
+        {
+            //this.mcdonald = this.game.add.sprite(x,y, 'mcdonald');
+            var createMCD = this.mcdonald.create(x,y, 'mcdonald');
+            // if(hitPlatformMCD)
+            // {
+            //     this.mcdonald.kill();
+            //     score += 5;
+            //     scoreText.text = 'Score: ' + score;
+            // }
+        }
+        //
+        //this.game.physics.arcade.overlap(this.cTrump, this.kfc, collectKFC, null, this);
+        //this.game.physics.arcade.overlap(this.cTrump, this.mcdonald, collectMCD, null, this);
+
+        
     },
+
 
     quitGame: function () {
         //  Then let's go back to the main menu.
         this.state.start('Menu');
-
+        this.gameMusic.stop();
     }
-
 };
