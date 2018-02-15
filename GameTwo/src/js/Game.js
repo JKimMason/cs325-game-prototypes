@@ -58,6 +58,19 @@ BasicGame.Game.prototype = {
       // var roller = this.game.rnd.integerInRange(0, 10);
        //var x = this.game.rnd.integerInRange(0, 800);
        //var y = this.game.rnd.integerInRange(0, 600);
+       var roller = this.game.rnd.integerInRange(0, 10);
+       var x = this.game.rnd.integerInRange(0, 800);
+       var y = this.game.rnd.integerInRange(0, 600);
+
+       x = this.game.rnd.integerInRange(0, 800);
+       y = this.game.rnd.integerInRange(0, 600);
+       var createKFC = this.kfc.create(x,y, 'kfc');
+   //}
+   //else if(roller>5 && roller<10)
+   //{
+       x = this.game.rnd.integerInRange(0, 800);
+       y = this.game.rnd.integerInRange(0, 600);
+       var createMCD= this.mcdonald.create(x,y, 'mcdonald');
     },
 
     // createKFC: function(x, y){
@@ -118,15 +131,15 @@ BasicGame.Game.prototype = {
         // {
             // if(roller>0 && roller<6)
             // {
-                x = this.game.rnd.integerInRange(0, 800);
-                y = this.game.rnd.integerInRange(0, 600);
-                var createKFC = this.kfc.create(x,y, 'kfc');
-            //}
-            //else if(roller>5 && roller<10)
-            //{
-                x = this.game.rnd.integerInRange(0, 800);
-                y = this.game.rnd.integerInRange(0, 600);
-                var createMCD= this.mcdonald.create(x,y, 'mcdonald');
+            //     x = this.game.rnd.integerInRange(0, 800);
+            //     y = this.game.rnd.integerInRange(0, 600);
+            //     var createKFC = this.kfc.create(x,y, 'kfc');
+            // //}
+            // //else if(roller>5 && roller<10)
+            // //{
+            //     x = this.game.rnd.integerInRange(0, 800);
+            //     y = this.game.rnd.integerInRange(0, 600);
+            //     var createMCD= this.mcdonald.create(x,y, 'mcdonald');
             //}
         //}
 
@@ -135,25 +148,25 @@ BasicGame.Game.prototype = {
         //     this.quitGame();
         // }
 
-        // Collision
-        //this.game.physics.arcade.overlap(this.cTrump, this.kfc, this.collectKFC, null, this);
-        //this.game.physics.arcade.overlap(this.cTrump, this.mcdonald, this.collectMCD, null, this);
+        // Collision      this.physics.arcade.overlap(this.weaponRed.bullets, this.enemiesRed, this.hitEnemy, null, this);
 
+        this.physics.arcade.overlap(this.cTrump, this.kfc, this.collectKFC, null, this);
+    //    this.physics.arcade.overlap(this.cTrump, this.mcdonald, this.collectMCD, null, this);
     },
 
     //Collect kfc meal
-    // collectKFC: function(x, y){
-    //     kfc.kill();
-    //     score += 10;
-    //     scoreText.text = 'Score: ' + score;
-    // },
-    //
-    // // Collect mcdonald meal
-    // collectMCD: function(x, y){
-    //     mcdonald.kill();
-    //     score += 5;
-    //     scoreText.text = 'Score: ' + score;
-    // },
+    collectKFC: function(player, food){
+        food.kill();
+        //score += 10;
+        //scoreText.text = 'Score: ' + score;
+    },
+
+    // Collect mcdonald meal
+    collectMCD: function(player, food){
+        food.kill();
+        //score += 5;
+        //scoreText.text = 'Score: ' + score;
+    },
 
     quitGame: function () {
         //  Then let's go back to the main menu.
