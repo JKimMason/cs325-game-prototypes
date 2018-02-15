@@ -42,6 +42,11 @@ BasicGame.Game.prototype = {
        this.game.stage.backgroundColor = "#a9f0ff";
        // Add chicken trump
        this.cTrump = this.game.add.sprite( this.game.world.centerX, this.game.world.centerY, 'chickenTrump' );
+       //this.cTrump.frame =0;
+       this.cTrump.animations.add('down', [0,1,2,3,4,5], 20, true);
+       this.cTrump.animations.add('right', [6,7,8,9,10,11],20, true);
+       this.cTrump.animations.add('up', [12,13,14,15,16,17], 20, true);
+       this.cTrump.animations.add('left', [18,19,20,21,22,23],20, true);
 
         // Turn on the arcade physics engine for this sprite.
         this.game.physics.enable( this.cTrump, Phaser.Physics.ARCADE );
@@ -51,55 +56,39 @@ BasicGame.Game.prototype = {
         // Follow
         this.game.camera.follow(this.cTrump);
 
-
-        // map = this.add.tilemap('tmap', 100, 100);
-        // map.addTilesetImage('tile');
-        // layer = map.createLayer(0);
-        // layer.resizeWorld();
-        //
-        //this.map = this.add.tilemap('tmap');
-        //this.map.addTilesetImage( 'tiles');
-        //GroundLayer though
-        //this.groundLayer = this.map.createLayer('GroundLayer');
-        //Before you can use the collide function you need to set what tiles can collide
-        //this.map.setCollisionBetween(1, 100, true, 'GroundLayer');
-        //Change the world size to match the size of this layer
-        //this.groundLayer.resizeWorld();
-
-
-        // Add tilemap and tileset image
-        //this.map = this.game.add.tilemap('tmap');
-        //this.map.addTilesetImage('tils', 'tiles');
-        //his.load.tilemap(''tmap', 'asssets/tiles/trumpMap.json', null, Phaser.Tilemap.TILED_JSON');
-        //this.load.image('tiles', 'assets/tiles/grass_main_128x128_0.png');
-        //this.game.load.tilemap('tmap', 'asssets/tiles/trumpMap.json', null, Phaser.Tilemap.TILED_JSON);
-        	//    this.game.load.image('tiles', 'assets/tiles/grass_main_128x128_0.png');
-
         // CSS style to text
         var style = { font: "25px Verdana", fill: "#666666", align: "center" };
         var text = this.game.add.text( this.game.world.centerX, 15, "RUN!", style );
         text.anchor.setTo( 0.5, 0.0 );
-
-        //cursors = game.input.keyboard.createCursorKeys();
-
-        // Flower player
-        //game.camera.follow(this.mysprite);
-
-        // // When you click on the sprite, you go back to the MainMenu.
-        //this.bouncy.inputEnabled = true;
-        //this.bouncy.events.onInputDown.add( function() { this.quitGame(); }, this );
     },
 
     update: function () {
         // Control
+        //this.cTrump.animations.stop();
         if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT))
-            this.cTrump.x -= 4;
+        {
+                this.cTrump.animations.play('left');
+                this.cTrump.x -= 4;
+                this.cTrump.animations.play('left');
+        }
         else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT))
+        {
+            this.cTrump.animations.play('right');
             this.cTrump.x += 4;
+            this.cTrump.animations.play('right');
+        }
         if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP))
+        {
+            this.cTrump.animations.play('up');
             this.cTrump.y -= 4;
+            this.cTrump.animations.play('up');
+        }
         else if (this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN))
-            this.cTrump.y += 4;
+        {
+                this.cTrump.animations.play('down');
+                this.cTrump.y += 4;
+                this.cTrump.animations.play('down');
+        }
     },
 
     quitGame: function () {
