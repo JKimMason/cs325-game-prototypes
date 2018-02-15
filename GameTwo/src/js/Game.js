@@ -62,8 +62,8 @@ BasicGame.Game.prototype = {
     },
 
     update: function () {
-        var hitPlatformKFC = this.game.physics.arcade.collide(this.cTrump, this.kfc);
-        var hitPlatformMCD = this.game.physics.arcade.collide(this.cTrump, this.mcdonald);
+        //var hitPlatformKFC = this.game.physics.arcade.collide(this.cTrump, this.kfc);
+        //var hitPlatformMCD = this.game.physics.arcade.collide(this.cTrump, this.mcdonald);
 
         // Randomizer
         var roller = this.game.rnd.integerInRange(0, 10);
@@ -83,7 +83,7 @@ BasicGame.Game.prototype = {
             this.cTrump.x += 4;
             this.cTrump.animations.play('right');
         }
-        if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP))
+        else if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP))
         {
             this.cTrump.animations.play('up');
             this.cTrump.y -= 4;
@@ -104,32 +104,42 @@ BasicGame.Game.prototype = {
             this.cTrump.animations.stop();
         }
 
+
         if(roller>0 && roller<6)
         {
             //this.kfc = this.game.add.sprite(x,y,'kfc');
             var createKFC = this.kfc.create(x,y, 'kfc');
-            //this.kfc.kill();
-            // score += 10;
-            // scoreText.text = 'Score: ' + score;
         }
         else if(roller>5 && roller<10)
         {
             //this.mcdonald = this.game.add.sprite(x,y, 'mcdonald');
             var createMCD = this.mcdonald.create(x,y, 'mcdonald');
-            // if(hitPlatformMCD)
-            // {
-            //     this.mcdonald.kill();
-            //     score += 5;
-            //     scoreText.text = 'Score: ' + score;
-            // }
         }
-        //
-        //this.game.physics.arcade.overlap(this.cTrump, this.kfc, collectKFC, null, this);
-        //this.game.physics.arcade.overlap(this.cTrump, this.mcdonald, collectMCD, null, this);
 
+
+        // if(point>200)
+        // {
+        //     this.quitGame();
+        // }
+        // //
+        //this.game.physics.arcade.overlap(this.cTrump, this.kfc, this.collectKFC, null, this);
+        //this.game.physics.arcade.overlap(this.cTrump, this.mcdonald, this.collectMCD, null, this);
 
     },
 
+    // Collect kfc meal
+    // collectKFC: function(this.cTrump, this.kfc){
+    //     this.kfc.kill();
+    //     score += 10;
+    //     scoreText.text = 'Score: ' + score;
+    // },
+    //
+    // // Collect mcdonald meal
+    // collectMCD: function(this.cTrump, this.mcdonald){
+    //     this.mcdonald.kill();
+    //     score += 5;
+    //     scoreText.text = 'Score: ' + score;
+    // },
 
     quitGame: function () {
         //  Then let's go back to the main menu.
