@@ -42,6 +42,9 @@ BasicGame.Game.prototype = {
         this.mcdonald = this.game.add.group();
         this.kfc.enableBody = true;
         this.mcdonald.enableBody = true;
+        this.score=null
+        this.scoreTextStyle=null;
+        this.scoreText=null;
 
         // Text at top
        var topTextStyle = { font: "25px Verdana", fill: "#666666", align: "center" };
@@ -51,9 +54,9 @@ BasicGame.Game.prototype = {
        var tutorialTextStyle = { font: "25px Verdana", fill: "#666666", align: "center" };
        var tutorial = this.game.add.text(280, 500, "Use the arrow keys!", tutorialTextStyle );
        // Score
-       var score = 0;
+       this.score = 0;
        var scoreTextStyle = { font: "25px Verdana", fill: "#000000", align: "center" };
-       var scoreText = this.game.add.text(25, 25, 'Score: 0' , scoreTextStyle );
+       this.scoreText = this.game.add.text(25, 25, 'Score: 0' , scoreTextStyle );
 
       // var roller = this.game.rnd.integerInRange(0, 10);
        //var x = this.game.rnd.integerInRange(0, 800);
@@ -155,17 +158,17 @@ BasicGame.Game.prototype = {
     },
 
     //Collect kfc meal
-    collectKFC: function(player, food){
-        food.kill();
-        //score += 10;
-        //scoreText.text = 'Score: ' + score;
+    collectKFC: function(trump, kfc){
+        kfc.kill();
+        this.score += 10;
+        this.scoreText.text = 'Score: ' + this.score;
     },
 
     // Collect mcdonald meal
-    collectMCD: function(player, food){
-        food.kill();
-        //score += 5;
-        //scoreText.text = 'Score: ' + score;
+    collectMCD: function(trump, mcd){
+        mcd.kill();
+        this.score += 5;
+        this.scoreText.text = 'Score: ' + this.score;
     },
 
     quitGame: function () {
