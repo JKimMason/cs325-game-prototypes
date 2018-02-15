@@ -3,7 +3,6 @@
 var BasicGame = {};
 
 BasicGame.Boot = function (game) {
-
 };
 
 BasicGame.Boot.prototype = {
@@ -30,7 +29,7 @@ BasicGame.Boot.prototype = {
     preload: function () {
         //  Here we load the assets required for our Preloader state (in this case a background and a loading bar)
         this.load.image('preloaderBackground', 'assets/image/preloader/preloader_background.jpg');
-        this.load.image('preloaderBar', 'assets/image/preloader/preloader_bar.png');
+        //this.load.image('preloaderBar', 'assets/image/preloader/preloader_bar.png');
     },
 
     create: function () {

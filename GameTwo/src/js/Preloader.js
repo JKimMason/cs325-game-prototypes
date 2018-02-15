@@ -10,23 +10,23 @@ BasicGame.Preloader.prototype = {
 	preload: function () {
 		//	These are the assets we loaded in Boot.js
 		this.background = this.add.sprite(0, 0, 'preloaderBackground');
-		this.preloadBar = this.add.sprite(300, 400, 'preloaderBar');
-		this.playButton = this.add.sprite(300, 117, 'playButton');
+		this.preloadBar = this.add.sprite(-50, 0, 'preloaderBar');
+		this.playButton = this.add.sprite(-50, 117, 'playButton');
 
 		//	This sets the preloadBar sprite as a loader sprite.
 		//	What that does is automatically crop the sprite from 0 to full-width
 		//	as the files below are loaded in.
-		this.load.setPreloadSprite(this.preloadBar);
-
+		//this.load.setPreloadSprite(this.preloadBar);
+		this.load.image("background", 'assets/image/background/background-pic.jpg', 1000, 200);
 		this.load.image('titlePage', 'assets/image/loader/donChicken.png');
 		this.load.spritesheet('playButton', 'assets/image/loader/start.png', 100, 200);
 		this.load.audio('titleMusic', ['assets/sound/BagRaider-ShootingStars.mp3']);
 		this.load.audio('chickenScream', ['assets/sound/chickenScream.mp3']);
 	    this.load.spritesheet('chickenTrump', 'assets/spritesheet/chickenTrump.png', 100, 100);
 
-		this.load.tilemap('tmap', 'asssets/tiles/newMap.json', null, Phaser.Tilemap.TILED_JSON);
-		this.load.image('tile', 'assets/tiles/grass_main_128x128_0.png');
-		this.load.image('background', 'assets/image/background/background-pic.jpg');
+		//this.load.tilemap('tmap', 'asssets/tiles/newMap.json', null, Phaser.Tilemap.TILED_JSON);
+		//this.load.image('tile', 'assets/tiles/grass_main_128x128_0.png');
+		//this.load.image('background', 'assets/image/background/background-pic.jpg');
 	},
 
 

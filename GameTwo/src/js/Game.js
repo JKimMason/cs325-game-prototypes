@@ -33,20 +33,20 @@ BasicGame.Game = function (game) {
 
 BasicGame.Game.prototype = {
     create: function () {
-        //this.game.stage.image('background', 'assets/image/background/background-pic.jpg');
         // Set FPS
         this.game.time.desiredFps = 60;
         // Background picture:
+        this.game.add.tileSprite(0, 0, 1000, 600, 'background');
         //this.game.load.image('background');
         //Change the background colour
        this.game.stage.backgroundColor = "#a9f0ff";
        // Add chicken trump
        this.cTrump = this.game.add.sprite( this.game.world.centerX, this.game.world.centerY, 'chickenTrump' );
        //this.cTrump.frame =0;
-       this.cTrump.animations.add('down', [0,1,2,3,4,5], 20, true);
-       this.cTrump.animations.add('right', [6,7,8,9,10,11],20, true);
-       this.cTrump.animations.add('up', [12,13,14,15,16,17], 20, true);
-       this.cTrump.animations.add('left', [18,19,20,21,22,23],20, true);
+       this.cTrump.animations.add('down', [0,1,2,3,4,5], 15, true);
+       this.cTrump.animations.add('right', [6,7,8,9,10,11],15, true);
+       this.cTrump.animations.add('up', [12,13,14,15,16,17], 15, true);
+       this.cTrump.animations.add('left', [18,19,20,21,22,23],15, true);
 
         // Turn on the arcade physics engine for this sprite.
         this.game.physics.enable( this.cTrump, Phaser.Physics.ARCADE );
@@ -88,6 +88,13 @@ BasicGame.Game.prototype = {
                 this.cTrump.animations.play('down');
                 this.cTrump.y += 4;
                 this.cTrump.animations.play('down');
+        }
+        else if ((!this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) &&
+                    (!this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) &&
+                    (!this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) &&
+                    (!this.game.input.keyboard.isDown(Phaser.Keyboard.UP)))
+        {
+            this.cTrump.animations.stop();
         }
     },
 
