@@ -127,7 +127,7 @@ BasicGame.Game.prototype = {
         //this.game.physics.arcade.overlap(this.cTrump, this.kfc, collectKFC, null, this);
         //this.game.physics.arcade.overlap(this.cTrump, this.mcdonald, collectMCD, null, this);
 
-        
+
     },
 
 
