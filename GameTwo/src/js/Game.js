@@ -31,11 +31,13 @@ BasicGame.Game = function (game) {
     this.cTrump = null;
 };
 
-
 BasicGame.Game.prototype = {
     create: function () {
+        //this.game.stage.image('background', 'assets/image/background/background-pic.jpg');
         // Set FPS
         this.game.time.desiredFps = 60;
+        // Background picture:
+        //this.game.load.image('background');
         //Change the background colour
        this.game.stage.backgroundColor = "#a9f0ff";
        // Add chicken trump
@@ -98,20 +100,9 @@ BasicGame.Game.prototype = {
             this.cTrump.y -= 4;
         else if (this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN))
             this.cTrump.y += 4;
-        //  Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
-
-        // Accelerate the 'logo' sprite towards the cursor,
-        // accelerating at 500 pixels/second and moving no faster than 500 pixels/second
-        // in X or Y.
-        // This function returns the rotation angle that makes it visually match its
-        // new trajectory.
-        //this.bouncy.rotation = this.game.physics.arcade.accelerateToPointer( this.bouncy, this.game.input.activePointer, 400, 400, 400 );
     },
 
     quitGame: function () {
-        //  Here you should destroy anything you no longer need.
-        //  Stop music, delete sprites, purge caches, free resources, all that good stuff.
-
         //  Then let's go back to the main menu.
         this.state.start('Menu');
 

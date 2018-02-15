@@ -8,13 +8,10 @@ BasicGame.Boot = function (game) {
 
 BasicGame.Boot.prototype = {
     init: function () {
-
         //  Unless you specifically know your game needs to support multi-touch I would recommend setting this to 1
         this.input.maxPointers = 1;
-
         //  Phaser will automatically pause if the browser tab the game is in loses focus. You can disable that here:
         this.stage.disableVisibilityChange = true;
-
         if (this.game.device.desktop)
         {
             //  If you have any desktop specific settings, they can go in here
@@ -29,9 +26,7 @@ BasicGame.Boot.prototype = {
             this.scale.forceLandscape = true;
             this.scale.pageAlignHorizontally = true;
         }
-
     },
-
     preload: function () {
         //  Here we load the assets required for our Preloader state (in this case a background and a loading bar)
         this.load.image('preloaderBackground', 'assets/image/preloader/preloader_background.jpg');

@@ -26,6 +26,7 @@ BasicGame.Preloader.prototype = {
 
 		this.load.tilemap('tmap', 'asssets/tiles/newMap.json', null, Phaser.Tilemap.TILED_JSON);
 		this.load.image('tile', 'assets/tiles/grass_main_128x128_0.png');
+		this.load.image('background', 'assets/image/background/background-pic.jpg');
 	},
 
 
