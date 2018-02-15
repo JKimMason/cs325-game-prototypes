@@ -5,7 +5,7 @@ BasicGame.Game = function (game) {
     this.kfc = null;
     this.mcdonald = null;
     this.gameMusic = null;
-    this.chickenDane = null;
+    this.chickenDance = null;
 };
 
 BasicGame.Game.prototype = {
@@ -55,30 +55,30 @@ BasicGame.Game.prototype = {
        var scoreTextStyle = { font: "25px Verdana", fill: "#000000", align: "center" };
        var scoreText = this.game.add.text(25, 25, 'Score: 0' , scoreTextStyle );
 
-       var roller = this.game.rnd.integerInRange(0, 10);
-       var x = this.game.rnd.integerInRange(0, 800);
-       var y = this.game.rnd.integerInRange(0, 600);
+      // var roller = this.game.rnd.integerInRange(0, 10);
+       //var x = this.game.rnd.integerInRange(0, 800);
+       //var y = this.game.rnd.integerInRange(0, 600);
     },
 
-    createKFC: function(x, y){
-        this.x;
-        this.y;
-        var createKFC = this.kfc.sprite(x,y, 'kfc');
-        //var createKFC = this.kfc.create(x,y, 'kfc');
-    },
-
-    createMCD: function(x, y){
-        this.x;
-        this.y;
-        var createKFC = this.kfc.sprite(x,y, 'kfc');
-        //var createKFC = this.kfc.create(x,y, 'kfc');
-    },
+    // createKFC: function(x, y){
+    //     this.x;
+    //     this.y;
+    //     var createKFC = this.kfc.sprite(x,y, 'kfc');
+    //     //var createKFC = this.kfc.create(x,y, 'kfc');
+    // },
+    //
+    // createMCD: function(x, y){
+    //     this.x;
+    //     this.y;
+    //     var createKFC = this.kfc.sprite(x,y, 'kfc');
+    //     //var createMCD= this.mcdonald.create(x,y, 'kfc');
+    // },
 
     update: function () {
         // Randomizer
         var roller = this.game.rnd.integerInRange(0, 10);
-        // var x = this.game.rnd.integerInRange(0, 800);
-        // var y = this.game.rnd.integerInRange(0, 600);
+        var x = this.game.rnd.integerInRange(0, 800);
+        var y = this.game.rnd.integerInRange(0, 600);
 
         // Control
         if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT))
@@ -114,39 +114,46 @@ BasicGame.Game.prototype = {
             this.cTrump.animations.stop();
         }
 
-        if(roller>0 && roller<6)
-        {
-            this.createKFC();
-        }
-        else if(roller>5 && roller<10)
-        {
-            this.createMCD();
-        }
+        // for (var i=0; i<5; i++)
+        // {
+            // if(roller>0 && roller<6)
+            // {
+                x = this.game.rnd.integerInRange(0, 800);
+                y = this.game.rnd.integerInRange(0, 600);
+                var createKFC = this.kfc.create(x,y, 'kfc');
+            //}
+            //else if(roller>5 && roller<10)
+            //{
+                x = this.game.rnd.integerInRange(0, 800);
+                y = this.game.rnd.integerInRange(0, 600);
+                var createMCD= this.mcdonald.create(x,y, 'mcdonald');
+            //}
+        //}
 
-        if(point>200)
-        {
-            this.quitGame();
-        }
+        // if(point>200)
+        // {
+        //     this.quitGame();
+        // }
 
         // Collision
-        this.game.physics.arcade.overlap(this.cTrump, this.kfc, this.collectKFC, null, this);
-        this.game.physics.arcade.overlap(this.cTrump, this.mcdonald, this.collectMCD, null, this);
+        //this.game.physics.arcade.overlap(this.cTrump, this.kfc, this.collectKFC, null, this);
+        //this.game.physics.arcade.overlap(this.cTrump, this.mcdonald, this.collectMCD, null, this);
 
     },
 
     //Collect kfc meal
-    collectKFC: function(x, y){
-        kfc.kill();
-        score += 10;
-        scoreText.text = 'Score: ' + score;
-    },
-
-    // Collect mcdonald meal
-    collectMCD: function(x, y){
-        mcdonald.kill();
-        score += 5;
-        scoreText.text = 'Score: ' + score;
-    },
+    // collectKFC: function(x, y){
+    //     kfc.kill();
+    //     score += 10;
+    //     scoreText.text = 'Score: ' + score;
+    // },
+    //
+    // // Collect mcdonald meal
+    // collectMCD: function(x, y){
+    //     mcdonald.kill();
+    //     score += 5;
+    //     scoreText.text = 'Score: ' + score;
+    // },
 
     quitGame: function () {
         //  Then let's go back to the main menu.
