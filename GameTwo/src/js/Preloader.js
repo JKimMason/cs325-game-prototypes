@@ -1,7 +1,6 @@
 "use strict";
 
 BasicGame.Preloader = function (game) {
-
 	this.background = null;
 	this.preloadBar = null;
 	this.ready = false;
@@ -23,9 +22,10 @@ BasicGame.Preloader.prototype = {
 		this.load.spritesheet('playButton', 'assets/image/loader/start.png', 100, 200);
 		this.load.audio('titleMusic', ['assets/sound/BagRaider-ShootingStars.mp3']);
 		this.load.audio('chickenScream', ['assets/sound/chickenScream.mp3']);
-		this.load.tilemap('tmap', 'asssets/tiles/trumpMap.json', null, Phaser.Tilemap.TILED_JSON);
-	    this.load.image('tiles', 'assets/tiles/grass_main_128x128_0.png');
 	    this.load.spritesheet('chickenTrump', 'assets/spritesheet/chickenTrump.png', 70, 100);
+
+		this.load.tilemap('tmap', 'asssets/tiles/newMap.json', null, Phaser.Tilemap.TILED_JSON);
+		this.load.image('tile', 'assets/tiles/grass_main_128x128_0.png');
 	},
 
 

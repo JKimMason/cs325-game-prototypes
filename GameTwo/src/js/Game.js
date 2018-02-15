@@ -27,15 +27,15 @@ BasicGame.Game = function (game) {
 
     // For optional clarity, you can initialize
     // member variables here. Otherwise, you will do it in create().
-    this.bouncy = null;;
     //this.map = null;
+    this.cTrump = null;
 };
 
-var map;
-var layer;
 
 BasicGame.Game.prototype = {
     create: function () {
+        // Set FPS
+        this.game.time.desiredFps = 60;
         //Change the background colour
        this.game.stage.backgroundColor = "#a9f0ff";
        // Add chicken trump
@@ -45,10 +45,26 @@ BasicGame.Game.prototype = {
         this.game.physics.enable( this.cTrump, Phaser.Physics.ARCADE );
         // Make it bounce off of the world bounds.
         this.cTrump.body.collideWorldBounds = true;
+
+        // Follow
+        this.game.camera.follow(this.cTrump);
+
+
         // map = this.add.tilemap('tmap', 100, 100);
         // map.addTilesetImage('tile');
         // layer = map.createLayer(0);
         // layer.resizeWorld();
+        //
+        //this.map = this.add.tilemap('tmap');
+        //this.map.addTilesetImage( 'tiles');
+        //GroundLayer though
+        //this.groundLayer = this.map.createLayer('GroundLayer');
+        //Before you can use the collide function you need to set what tiles can collide
+        //this.map.setCollisionBetween(1, 100, true, 'GroundLayer');
+        //Change the world size to match the size of this layer
+        //this.groundLayer.resizeWorld();
+
+
         // Add tilemap and tileset image
         //this.map = this.game.add.tilemap('tmap');
         //this.map.addTilesetImage('tils', 'tiles');
@@ -57,15 +73,10 @@ BasicGame.Game.prototype = {
         //this.game.load.tilemap('tmap', 'asssets/tiles/trumpMap.json', null, Phaser.Tilemap.TILED_JSON);
         	//    this.game.load.image('tiles', 'assets/tiles/grass_main_128x128_0.png');
 
-        // Add some text using a CSS style.
-        // Center it in X, and position its top 15 pixels from the top of the world.
+        // CSS style to text
         var style = { font: "25px Verdana", fill: "#666666", align: "center" };
         var text = this.game.add.text( this.game.world.centerX, 15, "RUN!", style );
-
         text.anchor.setTo( 0.5, 0.0 );
-
-        this.game.camera.follow(this.cTrump);
-        this.cursors = this.game.input.keyboard.createCursorKeys();
 
         //cursors = game.input.keyboard.createCursorKeys();
 
@@ -75,26 +86,18 @@ BasicGame.Game.prototype = {
         // // When you click on the sprite, you go back to the MainMenu.
         //this.bouncy.inputEnabled = true;
         //this.bouncy.events.onInputDown.add( function() { this.quitGame(); }, this );
-
-
-
-        // Add tilemap and tileset image
-        //this.map = this.game.add.tilemap('tilemap');
-        //this.map.addTilesetImage('tiles128', 'tiles');
-        //
-        // //Change the background colour
-        // this.game.stage.backgroundColor = "#a9f0ff";
-        // // Add goundLayer
-        // this.groundLayer = this.map.createLayer('GroundLayer');
-        // // Set tiles can collide
-        // //this.map.setCollisonBetween(1,100,true, 'GroundLayer');
-        //
-        // // Change world size to match size of this groundLayer
-        // this.groundLayer.resizeWorld();
     },
 
     update: function () {
-
+        // Control
+        if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT))
+            this.cTrump.x -= 4;
+        else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT))
+            this.cTrump.x += 4;
+        if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP))
+            this.cTrump.y -= 4;
+        else if (this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN))
+            this.cTrump.y += 4;
         //  Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
 
         // Accelerate the 'logo' sprite towards the cursor,
@@ -106,7 +109,6 @@ BasicGame.Game.prototype = {
     },
 
     quitGame: function () {
-
         //  Here you should destroy anything you no longer need.
         //  Stop music, delete sprites, purge caches, free resources, all that good stuff.
 
