@@ -27,32 +27,50 @@ BasicGame.Game = function (game) {
 
     // For optional clarity, you can initialize
     // member variables here. Otherwise, you will do it in create().
-    this.bouncy = null;
-    this.mysprite = null;
+    this.bouncy = null;;
+    //this.map = null;
 };
+
+var map;
+var layer;
 
 BasicGame.Game.prototype = {
     create: function () {
-
-        this.mysprite = this.game.add.sprite(45, 300, 'chickenTrump');
-        //mysprite.frame = 3;
-        //  Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
-
-        // Create a sprite at the center of the screen using the 'logo' image.
-        this.bouncy = this.game.add.sprite( this.game.world.centerX, this.game.world.centerY, 'logo' );
-        // // Anchor the sprite at its center, as opposed to its top-left corner.
-        // // so it will be truly centered.
-        this.bouncy.anchor.setTo( 0.5, 0.5 );
+        //Change the background colour
+       this.game.stage.backgroundColor = "#a9f0ff";
+       // Add chicken trump
+       this.cTrump = this.game.add.sprite( this.game.world.centerX, this.game.world.centerY, 'chickenTrump' );
 
         // Turn on the arcade physics engine for this sprite.
-        this.game.physics.enable( this.bouncy, Phaser.Physics.ARCADE );
+        this.game.physics.enable( this.cTrump, Phaser.Physics.ARCADE );
         // Make it bounce off of the world bounds.
-        this.bouncy.body.collideWorldBounds = true;
+        this.cTrump.body.collideWorldBounds = true;
+        // map = this.add.tilemap('tmap', 100, 100);
+        // map.addTilesetImage('tile');
+        // layer = map.createLayer(0);
+        // layer.resizeWorld();
+        // Add tilemap and tileset image
+        //this.map = this.game.add.tilemap('tmap');
+        //this.map.addTilesetImage('tils', 'tiles');
+        //his.load.tilemap(''tmap', 'asssets/tiles/trumpMap.json', null, Phaser.Tilemap.TILED_JSON');
+        //this.load.image('tiles', 'assets/tiles/grass_main_128x128_0.png');
+        //this.game.load.tilemap('tmap', 'asssets/tiles/trumpMap.json', null, Phaser.Tilemap.TILED_JSON);
+        	//    this.game.load.image('tiles', 'assets/tiles/grass_main_128x128_0.png');
+
         // Add some text using a CSS style.
         // Center it in X, and position its top 15 pixels from the top of the world.
         var style = { font: "25px Verdana", fill: "#666666", align: "center" };
         var text = this.game.add.text( this.game.world.centerX, 15, "RUN!", style );
+
         text.anchor.setTo( 0.5, 0.0 );
+
+        this.game.camera.follow(this.cTrump);
+        this.cursors = this.game.input.keyboard.createCursorKeys();
+
+        //cursors = game.input.keyboard.createCursorKeys();
+
+        // Flower player
+        //game.camera.follow(this.mysprite);
 
         // // When you click on the sprite, you go back to the MainMenu.
         //this.bouncy.inputEnabled = true;
@@ -61,8 +79,8 @@ BasicGame.Game.prototype = {
 
 
         // Add tilemap and tileset image
-        // this.map = this.game.add.tilemap('tilemap');
-        // this.map.addTilesetImage('tiles128', 'tiles');
+        //this.map = this.game.add.tilemap('tilemap');
+        //this.map.addTilesetImage('tiles128', 'tiles');
         //
         // //Change the background colour
         // this.game.stage.backgroundColor = "#a9f0ff";
@@ -84,7 +102,7 @@ BasicGame.Game.prototype = {
         // in X or Y.
         // This function returns the rotation angle that makes it visually match its
         // new trajectory.
-        this.bouncy.rotation = this.game.physics.arcade.accelerateToPointer( this.bouncy, this.game.input.activePointer, 400, 400, 400 );
+        //this.bouncy.rotation = this.game.physics.arcade.accelerateToPointer( this.bouncy, this.game.input.activePointer, 400, 400, 400 );
     },
 
     quitGame: function () {
