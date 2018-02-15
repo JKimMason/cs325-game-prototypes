@@ -151,7 +151,7 @@ BasicGame.Game.prototype = {
         // Collision      this.physics.arcade.overlap(this.weaponRed.bullets, this.enemiesRed, this.hitEnemy, null, this);
 
         this.physics.arcade.overlap(this.cTrump, this.kfc, this.collectKFC, null, this);
-    //    this.physics.arcade.overlap(this.cTrump, this.mcdonald, this.collectMCD, null, this);
+        this.physics.arcade.overlap(this.cTrump, this.mcdonald, this.collectMCD, null, this);
     },
 
     //Collect kfc meal
