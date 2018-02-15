@@ -37,6 +37,7 @@ BasicGame.Game.prototype = {
         //this.chickenDance.onPlay.addOnce(start, this);
         //this.addVid = this.chickenDance.addToWorld(400, 300, 0.5, 0,5);
 
+        // Create new group
         this.kfc= this.game.add.group();
         this.mcdonald = this.game.add.group();
         this.kfc.enableBody = true;
@@ -54,21 +55,30 @@ BasicGame.Game.prototype = {
        var scoreTextStyle = { font: "25px Verdana", fill: "#000000", align: "center" };
        var scoreText = this.game.add.text(25, 25, 'Score: 0' , scoreTextStyle );
 
-       // var roller;
-       // var x;
-       // var y;
-      // var createKFC = this.kfc.create(x,y, 'kfc');
+       var roller = this.game.rnd.integerInRange(0, 10);
+       var x = this.game.rnd.integerInRange(0, 800);
+       var y = this.game.rnd.integerInRange(0, 600);
+    },
 
+    createKFC: function(x, y){
+        this.x;
+        this.y;
+        var createKFC = this.kfc.sprite(x,y, 'kfc');
+        //var createKFC = this.kfc.create(x,y, 'kfc');
+    },
+
+    createMCD: function(x, y){
+        this.x;
+        this.y;
+        var createKFC = this.kfc.sprite(x,y, 'kfc');
+        //var createKFC = this.kfc.create(x,y, 'kfc');
     },
 
     update: function () {
-        //var hitPlatformKFC = this.game.physics.arcade.collide(this.cTrump, this.kfc);
-        //var hitPlatformMCD = this.game.physics.arcade.collide(this.cTrump, this.mcdonald);
-
         // Randomizer
         var roller = this.game.rnd.integerInRange(0, 10);
-        var x = this.game.rnd.integerInRange(0, 800);
-        var y = this.game.rnd.integerInRange(0, 600);
+        // var x = this.game.rnd.integerInRange(0, 800);
+        // var y = this.game.rnd.integerInRange(0, 600);
 
         // Control
         if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT))
@@ -104,42 +114,39 @@ BasicGame.Game.prototype = {
             this.cTrump.animations.stop();
         }
 
-
         if(roller>0 && roller<6)
         {
-            //this.kfc = this.game.add.sprite(x,y,'kfc');
-            var createKFC = this.kfc.create(x,y, 'kfc');
+            this.createKFC();
         }
         else if(roller>5 && roller<10)
         {
-            //this.mcdonald = this.game.add.sprite(x,y, 'mcdonald');
-            var createMCD = this.mcdonald.create(x,y, 'mcdonald');
+            this.createMCD();
         }
 
+        if(point>200)
+        {
+            this.quitGame();
+        }
 
-        // if(point>200)
-        // {
-        //     this.quitGame();
-        // }
-        // //
-        //this.game.physics.arcade.overlap(this.cTrump, this.kfc, this.collectKFC, null, this);
-        //this.game.physics.arcade.overlap(this.cTrump, this.mcdonald, this.collectMCD, null, this);
+        // Collision
+        this.game.physics.arcade.overlap(this.cTrump, this.kfc, this.collectKFC, null, this);
+        this.game.physics.arcade.overlap(this.cTrump, this.mcdonald, this.collectMCD, null, this);
 
     },
 
-    // Collect kfc meal
-    // collectKFC: function(this.cTrump, this.kfc){
-    //     this.kfc.kill();
-    //     score += 10;
-    //     scoreText.text = 'Score: ' + score;
-    // },
-    //
-    // // Collect mcdonald meal
-    // collectMCD: function(this.cTrump, this.mcdonald){
-    //     this.mcdonald.kill();
-    //     score += 5;
-    //     scoreText.text = 'Score: ' + score;
-    // },
+    //Collect kfc meal
+    collectKFC: function(x, y){
+        kfc.kill();
+        score += 10;
+        scoreText.text = 'Score: ' + score;
+    },
+
+    // Collect mcdonald meal
+    collectMCD: function(x, y){
+        mcdonald.kill();
+        score += 5;
+        scoreText.text = 'Score: ' + score;
+    },
 
     quitGame: function () {
         //  Then let's go back to the main menu.
