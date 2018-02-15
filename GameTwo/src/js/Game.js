@@ -30,7 +30,7 @@ BasicGame.Game.prototype = {
         // Turn on the arcade physics engine for this sprite.
         this.game.physics.enable( this.cTrump, Phaser.Physics.ARCADE );
         // Make it bounce off of the world bounds.
-        //this.cTrump.body.collideWorldBounds = true;
+        this.cTrump.body.collideWorldBounds = true;
 
         // Video:
         //this.chickenDance = this.add.video('chickenDance');
@@ -146,13 +146,12 @@ BasicGame.Game.prototype = {
             //}
         //}
 
-        // if(point>200)
-        // {
-        //     this.quitGame();
-        // }
+        if(this.score>200)
+        {
+            this.quitGame();
+        }
 
         // Collision      this.physics.arcade.overlap(this.weaponRed.bullets, this.enemiesRed, this.hitEnemy, null, this);
-
         this.physics.arcade.overlap(this.cTrump, this.kfc, this.collectKFC, null, this);
         this.physics.arcade.overlap(this.cTrump, this.mcdonald, this.collectMCD, null, this);
     },
@@ -170,6 +169,13 @@ BasicGame.Game.prototype = {
         this.score += 5;
         this.scoreText.text = 'Score: ' + this.score;
     },
+
+    // scoreMax: function(){
+    //     if(this.score==100)
+    //     {
+    //
+    //     }
+    // }
 
     quitGame: function () {
         //  Then let's go back to the main menu.
