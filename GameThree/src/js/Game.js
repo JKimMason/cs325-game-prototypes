@@ -202,7 +202,7 @@ BasicGame.Game = function (game) {
       var randomX = Math.random()*150;
       var randomY = Math.random()*150;
 
-      if(score>=1)
+      if(score>=10)
       {
         winGame();
       }
