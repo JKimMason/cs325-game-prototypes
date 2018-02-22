@@ -47,7 +47,7 @@ function addQuake() {
   			var h = game.world.height + margin * 2;
   			game.world.setBounds(x, y, w, h);
   			game.world.camera.position.set(0);
-			gameOverPageBackground = game.add.sprite(50, 100, 'winPageBG'); 
+			gameOverPageBackground = game.add.sprite(155, 68, 'winPageBG'); 
 			addQuake();
 			var topTextStyle = { font: "30px Verdana", fill: "#666666", align: "center" };
     	var topText = game.add.text(game.world.centerX, 15, "You win!!~", topTextStyle );
