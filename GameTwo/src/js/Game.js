@@ -91,6 +91,8 @@ BasicGame.Game.prototype = {
     // },
 
     update: function () {
+      //event.preventDefault();
+      
         // Randomizer
         var roller = this.game.rnd.integerInRange(0, 10);
         var x = this.game.rnd.integerInRange(0, 800);
