@@ -22,6 +22,7 @@ BasicGame.Game = function (game) {
   var tutorialTwo= null;
   var tutorialThree = null;
   var monster=null;
+  var monsterTwo=null;
   var music=null;
 
   function quitGame(){
@@ -34,7 +35,7 @@ BasicGame.Game = function (game) {
     //  Then let's go back to the main menu.
     music.stop();
     game.state.start('Win');
-    
+
   }
 
   function collectStar(player, star){
@@ -83,7 +84,7 @@ BasicGame.Game = function (game) {
       // FPS
       game.time.desiredFps = 60;
       // Map
-      gamePageBackground = game.add.sprite(0, 0, 'gameBG'); 
+      gamePageBackground = game.add.sprite(0, 0, 'gameBG');
       platforms = game.add.group();
       platforms.enableBody = true;
         // Create the ground.
@@ -118,9 +119,13 @@ BasicGame.Game = function (game) {
       monster = game.add.sprite(100, 300, 'monsterAdd');
       game.physics.enable(monster, Phaser.Physics.ARCADE);
       monster.body.gravity.y = 400;
-      monster.animations.add('right', [7,8,9,10,11,12,13],15, true);
-      monster.animations.add('left', [14,15,16,17,18,19,20],15, true);
-      monster.animations.add('death', [44,45,46,47,48,49,50,51,52,53,54,55],15,true);
+
+      monsterTwo = game.add.sprite(400, 300, 'monsterAdd');
+      game.physics.enable(monsterTwo, Phaser.Physics.ARCADE);
+      monsterTwo.body.gravity.y = 400;
+      // monster.animations.add('right', [7,8,9,10,11,12,13],15, true);
+      // monster.animations.add('left', [14,15,16,17,18,19,20],15, true);
+      // monster.animations.add('death', [44,45,46,47,48,49,50,51,52,53,54,55],15,true);
 
       // Random star spawn
       stars = game.add.group();
@@ -173,8 +178,10 @@ BasicGame.Game = function (game) {
       var diamondPhysics = game.physics.arcade.collide(diamonds, platforms);
       var diamondPlayer = game.physics.arcade.overlap(player, diamonds, collectDiamond, null, this);
       var monsterPlayer = game.physics.arcade.overlap(player, monster, killPlayer, null, this);
+      var monsterTwoPlayer = game.physics.arcade.overlap(player, monsterTwo, killPlayer, null, this);
       var hitPlatform = game.physics.arcade.collide(player, platforms);
       var monsterPlatform = game.physics.arcade.collide(monster, platforms);
+      var monsterTwoPlatform = game.physics.arcade.collide(monsterTwo, platforms);
       var cursors = game.input.keyboard.createCursorKeys();
       //  Reset the players velocity (movement)
       player.body.velocity.x = 0;
@@ -192,7 +199,7 @@ BasicGame.Game = function (game) {
         player.animations.stop();
         player.frame = 2;
       }
-      // Jump 
+      // Jump
       if (cursors.up.isDown && player.body.touching.down && hitPlatform)
       {
           tutorialThree.destroy();

@@ -28,7 +28,7 @@ BasicGame.MainMenu = function (game) {
 	}
 
 	// Functions
-	return { 
+	return {
 		// init: function(){
 		// 	titleText = game.make.text(50, 10, "Title");
 		// },
@@ -42,10 +42,10 @@ BasicGame.MainMenu = function (game) {
     		titleText.anchor.set(0.5);
   		},
 
-		create: function () { 
+		create: function () {
 			//deathMusic.stop();
 		 	// Background:
-			background = game.add.sprite(0, 0, 'titlePage'); 
+			background = game.add.sprite(0, 0, 'titlePage');
 			// Title page:
     		game.add.existing(titleText);
 
@@ -53,7 +53,7 @@ BasicGame.MainMenu = function (game) {
 			music = game.add.audio('titleMusic');
             music.loop = true;
             music.play();
-           
+
 			// Buttons:
 			playButton = game.add.button(255, 280, 'playButton', startGame, 'Game', this.startGame, this);
 			optionsButton = game.add.button(255, 380, 'optionsButton', optionsGame, 'Options', this.optionsGame, this);
