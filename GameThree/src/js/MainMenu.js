@@ -33,7 +33,7 @@ BasicGame.MainMenu = function (game) {
 		// 	titleText = game.make.text(50, 10, "Title");
 		// },
 		 init: function () {
-    		titleText = game.make.text(game.world.centerX, 105, "Game Title", {
+    		titleText = game.make.text(game.world.centerX, 105, "Stargazing Gone Wrong", {
      			font: 'bold 65pt Impact',
      			fill: '#FDFFB5',
       			align: 'center'
