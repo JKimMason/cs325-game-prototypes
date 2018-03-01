@@ -195,6 +195,12 @@ BasicGame.Game = function (game) {
 
   function freezePlayer(){
     player.animations.stop();
+    player.body.velocity.x = 0;
+  }
+
+  function zombiePlayerInteraction(player, monster){
+    game.time.events.add(Phaser.Timer.SECOND + 4, freezePlayer, this);
+    zombieAttack();
   }
 
   function zombieAttack(player, monster){
