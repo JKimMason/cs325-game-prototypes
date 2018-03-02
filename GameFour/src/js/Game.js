@@ -1,6 +1,7 @@
 "use strict";
 
 BasicGame.Game = function (game) {
+  // Variables
   var attack = null;
   var createHP=null;
   var createKFC=null;
@@ -47,215 +48,124 @@ BasicGame.Game = function (game) {
   var y=null;
   var zombieHP=10;
 
+  // Go to state:
   function quitGame(){
-    //  Then let's go back to the main menu.
     music.stop();
     game.state.start('Menu');
   }
-
   function winGame(){
-    //  Then let's go back to the main menu.
     music.stop();
     game.state.start('Win');
   }
 
+  // Collect items/Update information:
   function collectKFC(player, kfc){
     numOfKFC += 1;
     numOfKFCText.text = 'KFC: ' + numOfKFC;
     kfc.kill();
   }
-
   function collectMCD(player, mcd){
     numOfMCD +=1;
     numOfMCDText.text = 'MCD: ' + numOfMCD;
     mcd.kill();
   }
-
   function healPlayer(player, hp){
     pHP +=5;
     numOfPlayerHPText.text = 'Player HP: ' + pHP;
     hp.kill();
   }
-
-  function updatePlayerHP(){
+  function updatePlayerHP(player, hp){
     pHP -= 5;
     numOfPlayerHPText.text = 'Player HP: ' + pHP;
   }
-
-  function updateZombieHP(){
+  function updateZombieHP(monster, kfc){
     zombieHP-=5;
     numOfZombieHPText.text = 'Zombie HP: ' + zombieHP;
   }
 
-  function youArePlayerTutorial(){
-    playerTutorial = game.add.text(280, 300, "You are the player", tutorialTextStyle)
-  }
-
+  // Initialize Informations
   function initKFCCount(){
     numOfKFCText = game.add.text(player.position.x-390, player.position.y-405, 'KFC:  0' , scoreTextStyle );
     numOfKFCText.fixedToCamera = true;  
   }
-
   function initMCDCount(){
     numOfMCDText = game.add.text(player.position.x-390, player.position.y-380, 'MCD: 0' , scoreTextStyle );
     numOfMCDText.fixedToCamera = true;
   }
-
   function initPlayerHP(){
     numOfPlayerHPText = game.add.text(player.position.x+217, player.position.y-405, 'Player HP:  10' , scoreTextStyle );
     numOfPlayerHPText.fixedToCamera = true;
   }
-
   function initZombieHP(){
     numOfZombieHPText = game.add.text(player.position.x+209, player.position.y-380, 'Zombie HP: 10' , scoreTextStyle );
     numOfZombieHPText.fixedToCamera = true;
   }
 
   // TUTORIALS
+  function youArePlayerTutorial(){
+    playerTutorial = game.add.text(280, 300, "You are the player", tutorialTextStyle)
+  }
   function showMovementTutorial(){
     tutorialMovement = game.add.text(280, 500, "Use the arrow keys!", tutorialTextStyle );
     tutorialMovement.fixedToCamera = true;
   }
-
   function showZombieTutorial(){
     tutorialZombie = game.add.text(280,100, "Avoid space zombie!", tutorialTextStyle);
     tutorialZombie.fixedToCamera = true;
   }
-
   function showZombieDamageTutorial(){
     tutorialDamageZombie = game.add.text(280,100, "He hits with 5HP!!", tutorialTextStyle);
     tutorialDamageZombie.fixedToCamera = true;
   }
-
   function showKFCTutorial(){
     tutorialKFC = game.add.text(250,100, "Run the zombie into the KFC!", tutorialTextStyle);
     tutorialKFC.fixedToCamera = true;
   }
-
   function showHPTutorial(){
     tutorialHP = game.add.text(280,100, "You start with 10HP", tutorialTextStyle);
     tutorialHP.fixedToCamera = true;
   }
-
   function showMCDTutorial(){
     tutorialMCD = game.add.text(250,100, "Collect MCD to gain points", tutorialTextStyle);
     tutorialMCD.fixedToCamera = true;
   }
-
   function showHPPickupTutorial(){
     tutorialPickHP = game.add.text(250,100, "Collect Health to re-gain HP", tutorialTextStyle);
     tutorialPickHP.fixedToCamera = true;
   }
-
   function showGoal(){
     tutorialGoal = game.add.text(150,100, "Collect 10 MCD, or kill the zombie to win!", tutorialTextStyle);
     tutorialGoal.fixedToCamera = true;
   }
-
   function tutorialPlayerDestroyText(){
     playerTutorial.destroy();
   }
-
   function tutorialMovementDestroyText(){
     tutorialMovement.destroy();
   }
-
   function tutorialZombieDestroyText(){
     tutorialZombie.destroy();
   }
-
   function tutorialZombieDamageDestroyText(){
     tutorialDamageZombie.destroy();
   }
-  
   function tutorialKFCDestroyText(){
     tutorialKFC.destroy();
   }
-
   function tutorialHPPickupTutorial(){
     tutorialPickHP.destroy();
   }
-
   function tutorialHPDestroyText(){
     tutorialHP.destroy();
   }
-
   function tutorialMCDDestroyText(){
     tutorialMCD.destroy();
   }
-
   function tutorialGoalDestroyText(){
     tutorialGoal.destroy();
   }
 
-  function killZombie(){
-    monster.animations.play('death');
-    monster.kill();
-  }
-
-  function freezePlayer(){
-    player.animations.stop();
-    player.body.velocity.x = 0;
-  }
-
-  function zombiePlayerInteraction(player, monster){
-    game.time.events.add(Phaser.Timer.SECOND + 4, freezePlayer, this);
-    zombieAttack();
-  }
-
-  function zombieAttack(player, monster){
-    if(pHP>5)
-    {
-      updatePlayerHP();
-    }
-    else if(pHP<=5)
-    {
-      updatePlayerHP();
-      eatPlayer();
-    }
-  }
-
-
-  function eatPlayer(){
-    player.animations.stop();
-
-    if(player.position.x-monster.position.x>0){
-      monster.animations.play('rightattack');
-    }
-    else if(player.position.x-monster.position.x<0)
-      monster.animations.play('leftattack');
-    
-    if(pHP<=0){
-      playerAlive=0;
-      player.kill();
-      music.stop();
-      monster.animations.stop(); 
-
-      game.state.start('GameOver');
-    }
-  }
-
-  function zombieHPDead(){
-    if(zombieHP<=0){
-      monster.animations.stop();
-      monster.animations.play("death");
-      monster.kill();
-      game.state.start("Win");
-    }
-  }
-
-  function isPlayerAlive(){
-    if(playerAlive==1){
-      zombieMove();
-    }
-    else
-    {
-      monster.animations.stop();
-      killZombie();
-      game.state.start('GameOver');
-    }
-  }
-
+  // Spawns
   function foodSpawn(){
     randomSpawnPicker = game.rnd.integerInRange(0, 100);
     x = game.rnd.integerInRange(50,750);
@@ -265,31 +175,15 @@ BasicGame.Game = function (game) {
     else
       createMCD = mcdonald.create(x,y, 'mcdonald');
   }
-
   function HPSpawn(){
     x = game.rnd.integerInRange(50,750);
     y = game.rnd.integerInRange(50,750);
     createHP = hp.create(x,y, 'hp');
   }
 
-  function throwKFC(){
-    if(numOfKFC>0)
-    {
-      //kfc.fire();
-      //kfc.create(player.position.x, player.position.y, 'kfc');
-      //kfc.body.velocity.x=+200;
-      var kfcWeapon = kfc.create(x,y,'kfc');
-      kfcWeapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-      kfcWeapon.bulletSpeed=200;
-      kfcWeapon.fireRate=80;
-      kfcWeapon.fire();
-      numOfKFC-=1;
-    }
-  }
-
+  // Zombie monster
   function zombieMove(){
     game.physics.arcade.moveToObject(monster, player, 1, 5000);
-
     if((player.position.y-monster.position.y)<0 &&
       (player.position.y-monster.position.y)<-60 &&
       player.position.x-monster.position.x<60)
@@ -313,12 +207,81 @@ BasicGame.Game = function (game) {
       monster.animations.play('left');
     }
   }
-
   function enemyHit(monster, kfc){
     updateZombieHP();
-    kfc.kill();
     if(zombieHP<=0)
       zombieHPDead();
+  }
+  function zombieHPDead(){
+    if(zombieHP<=0){
+      killZombie();
+      game.state.start("Win");
+    }
+  }
+  function killZombie(){
+    monster.animations.play('death');
+    monster.kill();
+  }
+
+  // Zombie interactions
+  function zombieAttack(player, monster){
+    if(pHP>5)
+    {
+      updatePlayerHP();
+    }
+    else if(pHP<=5)
+    {
+      updatePlayerHP();
+      eatPlayer();
+    }
+  }
+  function eatPlayer(){
+    freezePlayer();
+    if(player.position.x-monster.position.x>0){
+      player.animations.stop();
+      monster.animations.play('rightattack');
+    }
+    else if(player.position.x-monster.position.x<0)
+      player.animations.stop();
+      monster.animations.play('leftattack');
+    player.animations.paused = false;
+    if(pHP<=0){
+      playerAlive=0;
+    }
+  }
+  function freezePlayer(){
+    player.animations.paused = true;
+    player.body.velocity.x = 0;
+    player.body.immovable=true;
+    player.body.moves = false;
+  }
+  function isPlayerAlive(){
+    if(playerAlive==1){
+      zombieMove();
+    }
+    else if(playerAlive==0)
+    {
+      player.kill();
+      monster.animations.stop();
+      killZombie();
+      music.stop();
+      game.state.start('GameOver');
+    }
+  }
+
+  function throwKFC(){
+    if(numOfKFC>0)
+    {
+      //kfc.fire();
+      //kfc.create(player.position.x, player.position.y, 'kfc');
+      //kfc.body.velocity.x=+200;
+      var kfcWeapon = kfc.create(x,y,'kfc');
+      kfcWeapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+      kfcWeapon.bulletSpeed=200;
+      kfcWeapon.fireRate=80;
+      kfcWeapon.fire();
+      numOfKFC-=1;
+    }
   }
 
   return {
@@ -465,6 +428,7 @@ BasicGame.Game = function (game) {
       else{
         player.animations.stop();
       }
+
 
       // // Player space key
       // if(spaceKey.isDown){
