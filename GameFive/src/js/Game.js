@@ -31,8 +31,11 @@ BasicGame.Game = function (game) {
   var starSound=null;
   var spaceKey=null;
   var mHP=null;
+  var mTwoHP=null;
   var mHPText=null;
   var mHPTextStyle=null;
+  var mTwoHPText = null;
+  var bothMonsterDead=null;
 
   function quitGame(){
     //  Then let's go back to the main menu.
@@ -118,8 +121,8 @@ BasicGame.Game = function (game) {
 
   function moveLeft()
   {
-    monster.animations.play('left');
-    monster.body.velocity.x = -100;
+    monsterTwo.animations.play('left');
+    monsterTwo.body.velocity.x = -10;
   }
 
   function hitMonster(monster, weaponStar)
@@ -130,6 +133,16 @@ BasicGame.Game = function (game) {
     if(mHP<=0)
     	monster.kill();
   }
+
+  function hitMonsterTwo(monsterTwo, weaponStar)
+  {
+    weaponStar.kill();
+    mTwoHP -= 1;
+    mTwoHP.text = 'Monster HP: ' + mTwoHP + ' HP!';
+    if(mTwoHP<=0)
+      monsterTwo.kill();
+  }
+
 
   function loseOneStar(star)
   {
@@ -157,9 +170,18 @@ BasicGame.Game = function (game) {
     }
   }
 
+  function showDiamond()
+  {
+    var diamond = diamonds.create(Math.random()*700,100,'diamond');
+    diamond.body.gravity.y = 200;
+    diamond.body.bounce.y = Math.random()*0.2;
+    diamond.visible=false;
+    diamond.visible=true;
+  }
+
   return {
     create: function () {
-      game.time.events.loop(Phaser.Timer.SECOND / (100), starSpawn, this);
+      game.time.events.loop(Phaser.Timer.SECOND / (1), starSpawn, this);
       game.time.events.loop(Phaser.Timer.SECOND / (1/2), moveRight, this);
       // Set world
       game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -207,28 +229,33 @@ BasicGame.Game = function (game) {
       player.animations.add('left', [18,19,20,21,22,23],15, true);
       jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
       // Monster
-      monster = game.add.sprite(100, 600, 'monsterAdd');
+      monster = game.add.sprite(50, 600, 'monsterAdd');
       monster.visible = false;
       game.physics.enable(monster, Phaser.Physics.ARCADE);
         // Re-size hitbox
       monster.body.setSize(28,55,22,3);
-      monster.body.gravity.y = 400;
+      monster.body.gravity.y = 500;
       game.time.events.add(Phaser.Timer.SECOND * 1, createZombie, this);
-
-
-      monsterTwo = game.add.sprite(700, 300, 'monsterAdd');
-      game.physics.enable(monsterTwo, Phaser.Physics.ARCADE);
-      monsterTwo.visible = false;
-        // Re-size hitbox
-      monsterTwo.body.setSize(28,55,22,3);
-      monsterTwo.body.gravity.y = 400;
-      game.time.events.add(Phaser.Timer.SECOND * 2, createZombieTwo, this);
-
-
+        // Animation
       monster.animations.add('right', [7,8,9,10,11,12,13],15, true);
       monster.animations.add('left', [14,15,16,17,18,19,20],15, true);
       monster.animations.add('death', [44,45,46,47,48,49,50,51,52,53,54,55],15,true);
       monster.animations.add('create', [54,53,52,51,45,44],3,true);
+
+      monsterTwo = game.add.sprite(700, 600, 'monsterAdd');
+      game.physics.enable(monsterTwo, Phaser.Physics.ARCADE);
+      monsterTwo.visible = false;
+        // Re-size hitbox
+      monsterTwo.body.setSize(28,55,22,3);
+      monsterTwo.body.gravity.y = 500;
+      game.time.events.add(Phaser.Timer.SECOND * 1, createZombieTwo, this);
+
+        // Animation
+      monsterTwo.animations.add('right', [7,8,9,10,11,12,13],15, true);
+      monsterTwo.animations.add('left', [14,15,16,17,18,19,20],15, true);
+      monsterTwo.animations.add('death', [44,45,46,47,48,49,50,51,52,53,54,55],15,true);
+      monsterTwo.animations.add('create', [54,53,52,51,45,44],3,true);
+
 
       // Random star spawn
       stars = game.add.group();
@@ -244,31 +271,16 @@ BasicGame.Game = function (game) {
       // Diamond
       diamonds = game.add.group();
       diamonds.enableBody = true;
-      var diamond = diamonds.create(Math.random()*700,100,'diamond');
-      diamond.body.gravity.y = 200;
-      diamond.body.bounce.y = Math.random()*0.2;
 
-      //scoreTextStyle = { font: "25px Verdana", fill: "#F5FF33", align: "center" };
-      //scoreText = game.add.text(player.position.x-400, player.position.y-400, 'Star: 0' , scoreTextStyle );
-      //scoreText.fixedToCamera = true;
-      
       // Zombie HP
       mHPTextStyle = { font: "25px Verdana", fill: "#F5FF33", align: "center" };
       mHPText = game.add.text(player.position.x-400, player.position.y-400, 'Monster HP: 100' , mHPTextStyle );
       mHPText.fixedToCamera = true;
-
+      mTwoHPText = game.add.text(player.position.x+180, player.position.y-400, 'Monster HP: 100' , mHPTextStyle );
+      mTwoHPText.fixedToCamera = true;
       score = 0;
-      tutorialTextStyle = { font: "25px Verdana", fill: "#666666", align: "center" };
-      //tutorial = game.add.text(280, 500, "Use the arrow keys!", tutorialTextStyle );
-      //tutorialTwo = game.add.text(280,200, "Collect the stars!", tutorialTextStyle);
-      //tutorialThree = game.add.text(270,100, "Avoid space zombies!", tutorialTextStyle);
-      //tutorial.fixedToCamera = true;
-      //tutorialTwo.fixedToCamera = true;
-      //tutorialThree.fixedToCamera = true;
-      // game.input.onDown.addOnce(tutorialDestroyText, this);
-      // game.input.onDown.addOnce(tutorialTwoDestroyText, this);
-      // game.input.onDown.addOnce(tutorialThreeDestroyText, this);
 
+      bothMonsterDead=false;
       // Make it bounce off of the world bounds.
       player.body.collideWorldBounds = true;
       // Enables camera to follow player.
@@ -290,16 +302,23 @@ BasicGame.Game = function (game) {
       var diamondPhysics = game.physics.arcade.collide(diamonds, platforms);
       var diamondPlayer = game.physics.arcade.overlap(player, diamonds, collectDiamond, null, this);
       var monsterPlayer = game.physics.arcade.overlap(player, monster, killPlayer, null, this);
-      var monsterStar = game.physics.arcade.overlap(monster, weaponStar, hitMonster, null, this);
       var monsterTwoPlayer = game.physics.arcade.overlap(player, monsterTwo, killPlayer, null, this);
       var hitPlatform = game.physics.arcade.collide(player, platforms);
       var monsterPlatform = game.physics.arcade.collide(monster, platforms);
       var monsterTwoPlatform = game.physics.arcade.collide(monsterTwo, platforms);
-      var cursors = game.input.keyboard.createCursorKeys();
+
+
+      var monsterStar = game.physics.arcade.overlap(monster, weaponStar, hitMonster, null, this);
+      var monsterTwoStar = game.physics.arcade.overlap(monsterTwo, weaponStar, hitMonsterTwo, null, this);
+
+
       //  Reset the players velocity (movement)
       player.body.velocity.x = 0;
       game.time.events.add(Phaser.Timer.SECOND * 3, moveRight, this);
+      game.time.events.add(Phaser.Timer.SECOND * 3, moveLeft, this);
 
+      // KEY Control
+      var cursors = game.input.keyboard.createCursorKeys();
       spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
       // Control
@@ -329,6 +348,11 @@ BasicGame.Game = function (game) {
         if(score>0)
         	//game.time.events.add(Phaser.Timer.SECOND * 3, fireStar, this);
           fireStar();
+      }
+
+      if(bothMonsterDead)
+      {
+        showDiamond();
       }
 
       if(score>=1000)
