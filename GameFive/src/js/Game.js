@@ -36,6 +36,7 @@ BasicGame.Game = function (game) {
   var mHPTextStyle=null;
   var mTwoHPText = null;
   var bothMonsterDead=null;
+  var enemies=null;
 
   function quitGame(){
     //  Then let's go back to the main menu.
@@ -111,24 +112,38 @@ BasicGame.Game = function (game) {
     monsterTwo.animations.play('create');
   }
 
-
-  function moveRight()
+  function moveOneRight()
   {
     monster.animations.play('right');
     //monster.animations.play('death');
-   monster.body.velocity.x = 10;
+   monster.body.velocity.x = 50;
   }
 
-  function moveLeft()
+  function moveOneLeft()
+  {
+    monster.animations.play('left');
+    //monster.animations.play('death');
+   monster.body.velocity.x = -50;
+  }
+
+  function moveTwoRight()
+  {
+    monsterTwo.animations.play('right');
+    monsterTwo.body.velocity.x = 50;
+  }
+
+  function moveTwoLeft()
   {
     monsterTwo.animations.play('left');
-    monsterTwo.body.velocity.x = -10;
+    monsterTwo.body.velocity.x = -50;
   }
 
   function hitMonster(monster, weaponStar)
   {
-  	weaponStar.kill();
-    mHP -= 1;
+  	//weaponStar.kill();
+    star.kill();
+    monster.body.velocity.x = -5;
+    mHP -= 50;
     mHP.text = 'Monster HP: ' + mHP + ' HP!';
     if(mHP<=0)
     	monster.kill();
@@ -136,8 +151,9 @@ BasicGame.Game = function (game) {
 
   function hitMonsterTwo(monsterTwo, weaponStar)
   {
-    weaponStar.kill();
-    mTwoHP -= 1;
+    //weaponStar.kill();
+    monsterTwo.body.velocity.x = 5;
+    mTwoHP -= 50;
     mTwoHP.text = 'Monster HP: ' + mTwoHP + ' HP!';
     if(mTwoHP<=0)
       monsterTwo.kill();
@@ -182,7 +198,7 @@ BasicGame.Game = function (game) {
   return {
     create: function () {
       game.time.events.loop(Phaser.Timer.SECOND / (1), starSpawn, this);
-      game.time.events.loop(Phaser.Timer.SECOND / (1/2), moveRight, this);
+     // game.time.events.loop(Phaser.Timer.SECOND / (1/2), moveOneRight, this);
       // Set world
       game.physics.startSystem(Phaser.Physics.ARCADE);
       game.world.setBounds(0, 0, 800, 800);
@@ -197,7 +213,6 @@ BasicGame.Game = function (game) {
       ground.scale.setTo(2, 2);
       ground.body.immovable = true;
 
-      //  Now let's create two ledges
       //var ledge = platforms.create(400, 400, 'ground');
       // ledge = platforms.create(-100, 700, 'ground');
       //ledge.body.immovable = true;
@@ -215,9 +230,10 @@ BasicGame.Game = function (game) {
       // Music
       music = game.add.audio('gameMusic');
       starSound = game.add.audio('starSound');
-      //music.play();
+      music.play();
       music.volume = 0.5;
       starSound.volume = 0.2;
+
       // Player
       player = game.add.sprite( game.world.centerX, game.world.centerY, 'playerAdd');
       game.physics.enable(player, Phaser.Physics.ARCADE);
@@ -228,7 +244,11 @@ BasicGame.Game = function (game) {
       player.animations.add('right', [6,7,8,9,10,11],15, true);
       player.animations.add('left', [18,19,20,21,22,23],15, true);
       jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+      enemies = game.add.group();
+
       // Monster
+      monster = game.add.group();
       monster = game.add.sprite(50, 600, 'monsterAdd');
       monster.visible = false;
       game.physics.enable(monster, Phaser.Physics.ARCADE);
@@ -249,6 +269,10 @@ BasicGame.Game = function (game) {
       monsterTwo.body.setSize(28,55,22,3);
       monsterTwo.body.gravity.y = 500;
       game.time.events.add(Phaser.Timer.SECOND * 1, createZombieTwo, this);
+      monster.enableBody = true;
+      monsterTwo.enableBody = true;
+      monster.physicsBodyType = Phaser.Physics.ARCADE;
+      monsterTwo.physicsBodyType = Phaser.Physics.ARCADE;
 
         // Animation
       monsterTwo.animations.add('right', [7,8,9,10,11,12,13],15, true);
@@ -256,13 +280,12 @@ BasicGame.Game = function (game) {
       monsterTwo.animations.add('death', [44,45,46,47,48,49,50,51,52,53,54,55],15,true);
       monsterTwo.animations.add('create', [54,53,52,51,45,44],3,true);
 
-
       // Random star spawn
       stars = game.add.group();
       stars.enableBody = true;
 
       // Weapon: bullet star
-      weaponStar = game.add.weapon(5, 'star');
+      weaponStar = game.add.weapon(2, 'star');
       weaponStar.trackSprite(player, 30,35, true);
       weaponStar.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
       weaponStar.bulletSpeed = 600;
@@ -271,13 +294,14 @@ BasicGame.Game = function (game) {
       // Diamond
       diamonds = game.add.group();
       diamonds.enableBody = true;
+      game.time.events.add(Phaser.Timer.SECOND * 10, showDiamond, this);
 
       // Zombie HP
       mHPTextStyle = { font: "25px Verdana", fill: "#F5FF33", align: "center" };
-      mHPText = game.add.text(player.position.x-400, player.position.y-400, 'Monster HP: 100' , mHPTextStyle );
-      mHPText.fixedToCamera = true;
-      mTwoHPText = game.add.text(player.position.x+180, player.position.y-400, 'Monster HP: 100' , mHPTextStyle );
-      mTwoHPText.fixedToCamera = true;
+     //mHPText = game.add.text(player.position.x-400, player.position.y-400, 'Monster HP: 100' , mHPTextStyle );
+      //mHPText.fixedToCamera = true;
+      //mTwoHPText = game.add.text(player.position.x+180, player.position.y-400, 'Monster HP: 100' , mHPTextStyle );
+      //mTwoHPText.fixedToCamera = true;
       score = 0;
 
       bothMonsterDead=false;
@@ -290,6 +314,7 @@ BasicGame.Game = function (game) {
     // Debug
     render: function(){
       //game.debug.bodyInfo(monster, 32, 200);
+      //game.debug.bodyInfo(monsterTwo, 32, 80);
       //game.debug.bodyInfo(player, 32,80);
       //game.debug.body(player);
       //game.debug.body(monster);
@@ -307,15 +332,14 @@ BasicGame.Game = function (game) {
       var monsterPlatform = game.physics.arcade.collide(monster, platforms);
       var monsterTwoPlatform = game.physics.arcade.collide(monsterTwo, platforms);
 
-
       var monsterStar = game.physics.arcade.overlap(monster, weaponStar, hitMonster, null, this);
       var monsterTwoStar = game.physics.arcade.overlap(monsterTwo, weaponStar, hitMonsterTwo, null, this);
 
-
       //  Reset the players velocity (movement)
       player.body.velocity.x = 0;
-      game.time.events.add(Phaser.Timer.SECOND * 3, moveRight, this);
-      game.time.events.add(Phaser.Timer.SECOND * 3, moveLeft, this);
+      game.time.events.add(Phaser.Timer.SECOND * 3, moveOneRight, this);
+      game.time.events.add(Phaser.Timer.SECOND * 3, moveTwoLeft, this);
+
 
       // KEY Control
       var cursors = game.input.keyboard.createCursorKeys();
@@ -325,36 +349,33 @@ BasicGame.Game = function (game) {
       if(cursors.left.isDown){
         player.body.velocity.x = -200;
         player.animations.play('left');
-        //weaponStar.angle = 180;
       }
       else if (cursors.right.isDown){
         player.body.velocity.x = 200;
         player.animations.play('right');
-        //weaponStar.angle = 0;
       }
       else{
         player.animations.stop();
-        //player.frame = 2;
       }
-      // Jump
+        // Jump
       if (cursors.up.isDown && player.body.touching.down && hitPlatform)
       {
-          //tutorialThree.destroy();
-          player.body.velocity.y = -200;
+        player.body.velocity.y = -250;
       }
 
       // Player space key
       if(spaceKey.isDown){
         if(score>0)
-        	//game.time.events.add(Phaser.Timer.SECOND * 3, fireStar, this);
           fireStar();
       }
 
+      // If both died, show diamond
       if(bothMonsterDead)
       {
         showDiamond();
       }
 
+      // Winner
       if(score>=1000)
       {
         winGame();

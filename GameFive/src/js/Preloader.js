@@ -26,7 +26,7 @@ BasicGame.Preloader = function (game) {
 
 	        // Game
 	        game.load.image('gameBG', 'assets/image/background/space-game-bg.jpg');
-	        game.load.audio('gameMusic', ['assets/sound/nyancat.mp3']);
+	        game.load.audio('gameMusic', ['assets/sound/BagRaider-ShootingStars.mp3']);
 	        //game.load.spritesheet('playerAdd', 'assets/image/spritesheet/player.png', 100, 97);
 	        game.load.spritesheet('playerAdd', 'assets/image/spritesheet/player.png', 100, 100);
 	        game.load.spritesheet('monsterAdd', 'assets/image/spritesheet/monster.png',64, 64);
