@@ -4,7 +4,7 @@ BasicGame.Game = function (game) {
   var bullets=null;
   var bullet=null;
   var nextFire=0;
-  var fireRate = 1000;
+  var fireRate = 600;
   var land=null;
   var gun=null;
   var player=null;
@@ -25,6 +25,8 @@ BasicGame.Game = function (game) {
   var music=null;
   var bulletSound=null;
   var bulletHitSound=null;
+  var armorSound=null;
+  var healthSound=null;
 
   // Stats:
   var armorLevel = 0;
@@ -64,6 +66,7 @@ BasicGame.Game = function (game) {
   }
 
   function collectHealth(player, healthPack){
+    healthSound.play();
     healthPack.kill();
     if(healthLevel<healthTotal)
       healthLevel+=25;
@@ -76,6 +79,7 @@ BasicGame.Game = function (game) {
   }
 
   function collectArmor(player, armorPack){
+    armorSound.play();
     armorPack.kill();
     if(armorLevel==armorTotal)
       armorLevel+=0;
@@ -93,7 +97,7 @@ BasicGame.Game = function (game) {
   }
 
   function targetSpawn(){
-    target = game.add.sprite(Math.random()*800, 100, 'target');
+    target = game.add.sprite(Math.random()*400, Math.random()*400, 'target');
     target.enableBody=true;
     game.physics.enable(target, Phaser.Physics.ARCADE);
   }
@@ -118,7 +122,10 @@ BasicGame.Game = function (game) {
       bulletSound.volume = 0.2;
       bulletHitSound = game.add.audio('bulletHit');
       bulletSound.volume = 0.4;
-
+      armorSound = game.add.audio('wearArmor');
+      armorSound.volume = 0.3;
+      healthSound = game.add.audio('wearHealth');
+      healthSound.volume = 0.5;
       // Player
       player = game.add.sprite(400, 300, 'player');
       game.physics.enable(player, Phaser.Physics.ARCADE);
@@ -136,7 +143,7 @@ BasicGame.Game = function (game) {
       // Weapon
       weapon = game.add.weapon(30, 'bullet');
       weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-      weapon.bulletSpeed = 1000;
+      weapon.bulletSpeed = 1200;
       weapon.fireRate = pistol;
       weapon.bulletAngleVariance=2;
       weapon.trackSprite(player, 20, 20);

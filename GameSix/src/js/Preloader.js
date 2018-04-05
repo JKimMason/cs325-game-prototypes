@@ -39,7 +39,9 @@ BasicGame.Preloader = function (game) {
 
 	        // Sound:
 	        game.load.audio('bulletFired', ['assets/sound/bulletFired.mp3']);
-	        game.load.audio('bulletHit', ['assets/sound/bulletHit.mp3']);
+	        game.load.audio('bulletHit', ['assets/sound/bulletHit.mp3']); 
+	        game.load.audio('wearHealth', ['assets/sound/wearHealth.mp3']);
+	        game.load.audio('wearArmor', ['assets/sound/wearArmor.mp3']);
 
 		},
 
