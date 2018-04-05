@@ -97,9 +97,10 @@ BasicGame.Game = function (game) {
   }
 
   function targetSpawn(){
-    target = game.add.sprite(Math.random()*400, Math.random()*400, 'target');
+    target = game.add.sprite(Math.random()*700, Math.random()*500, 'target');
     target.enableBody=true;
     game.physics.enable(target, Phaser.Physics.ARCADE);
+    target.body.setSize(34,34,12,11);
   }
 
   return {
@@ -125,7 +126,7 @@ BasicGame.Game = function (game) {
       armorSound = game.add.audio('wearArmor');
       armorSound.volume = 0.3;
       healthSound = game.add.audio('wearHealth');
-      healthSound.volume = 0.5;
+      healthSound.volume = 0.6;
       // Player
       player = game.add.sprite(400, 300, 'player');
       game.physics.enable(player, Phaser.Physics.ARCADE);
@@ -152,6 +153,7 @@ BasicGame.Game = function (game) {
       //targets = game.add.group();
       target.enableBody=true;
       game.physics.enable(target, Phaser.Physics.ARCADE);
+      target.body.setSize(34,34,12,11);
       targetPoint=0;
       targetPointTotal=20;
 
@@ -173,6 +175,8 @@ BasicGame.Game = function (game) {
 
     // Debug
     render: function(){
+      //game.debug.bodyInfo(target, 32, 200); 
+      game.debug.body(target);
       game.debug.text('Health: ' + healthLevel + '/' + healthTotal, 30, 30);
       game.debug.text('Armor:  ' + armorLevel + '/' + armorTotal, 30, 50);
       game.debug.text('Target: ' + targetPoint + '/' + targetPointTotal, 30, 70);
