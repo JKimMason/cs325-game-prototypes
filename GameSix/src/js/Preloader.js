@@ -29,7 +29,6 @@ BasicGame.Preloader = function (game) {
 	        game.load.spritesheet('player', 'assets/image/spritesheet/player.png', 39, 49);
 
 	        // Map
-	        game.load.image('ground', 'assets/image/game/grass.png');
 	        game.load.image('earth', 'assets/image/background/light_grass.png');
 
 	        // Items:
