@@ -95,37 +95,6 @@ BasicGame.Game = function (game) {
 
   }
 
-  function enemyTank(index, game, player, bullets){
-    var x = game.world.randomX;
-    var y = game.world.randomY;
-
-    this.game = game;
-    this.health = 3;
-    this.player = player;
-    this.bullets = bullets;
-    this.fireRate = 1000;
-    this.nextFire = 0;
-    this.alive = true;
-
-    this.shadow = game.add.sprite(x, y, 'enemy', 'shadow');
-    this.tank = game.add.sprite(x, y, 'enemy', 'tank1');
-    this.turret = game.add.sprite(x, y, 'enemy', 'turret');
-
-    this.shadow.anchor.set(0.5);
-    this.tank.anchor.set(0.5);
-    this.turret.anchor.set(0.3, 0.5);
-
-    this.tank.name = index.toString();
-    game.physics.enable(this.tank, Phaser.Physics.ARCADE);
-    this.tank.body.immovable = false;
-    this.tank.body.collideWorldBounds = true;
-    this.tank.body.bounce.setTo(1, 1);
-
-    this.tank.angle = game.rnd.angle();
-
-    game.physics.arcade.velocityFromRotation(this.tank.rotation, 100, this.tank.body.velocity);
-
-  }
 
   return {
     create: function () {
@@ -221,28 +190,11 @@ BasicGame.Game = function (game) {
       // Interaction:
       healthPackPlayer = game.physics.arcade.collide(healthPack, player, collectHealth, null, this);
       armorPackPlayer = game.physics.arcade.collide(armorPack, player, collectArmor, null, this);
-     // enemyBulletPlayer = game.physics.arcade.collide(enemyBullets, player, bulletHitPlayer, null, this);
-
+ 
 
       //  Reset the players velocity (movement)
       player.body.velocity.x = 0;
       player.body.velocity.y=0;
-
-
-
-      for (var i = 0; i < enemies.length; i++)
-      {
-          if (enemies[i].alive)
-          {
-              enemiesAlive++;
-              game.physics.arcade.collide(tank, enemies[i].tank);
-              game.physics.arcade.overlap(bullets, enemies[i].tank, bulletHitEnemy, null, this);
-              enemies[i].update();
-          }
-      }
-
-
-
 
 
 
