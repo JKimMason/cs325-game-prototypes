@@ -223,6 +223,7 @@ BasicGame.Game = function (game) {
       armorPackPlayer = game.physics.arcade.collide(armorPack, player, collectArmor, null, this);
      // enemyBulletPlayer = game.physics.arcade.collide(enemyBullets, player, bulletHitPlayer, null, this);
 
+
       //  Reset the players velocity (movement)
       player.body.velocity.x = 0;
       player.body.velocity.y=0;
