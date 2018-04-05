@@ -17,7 +17,7 @@ BasicGame.Preloader = function (game) {
 			game.load.setPreloadSprite(preloadBar);
 
 			// Main menu:
-			game.load.audio('titleMusic', ['assets/sound/loadingShort.mp3']);
+			game.load.audio('titleMusic', ['assets/sound/menuMusic.mp3']);
 				// Buttons
 			game.load.image('playButton', 'assets/image/mainmenu/play.png');
 	        game.load.image('settingsButton', 'assets/image/mainmenu/settings.png');
@@ -25,23 +25,23 @@ BasicGame.Preloader = function (game) {
 	        game.load.image('quitButton', 'assets/image/mainmenu/quit.png');
 
 	        // Game
-	        game.load.audio('gameMusic', ['assets/sound/BagRaider-ShootingStars.mp3']);
-	        game.load.spritesheet('player', 'assets/image/player.png', 39, 49);
-	        game.load.spritesheet('monsterAdd', 'assets/image/spritesheet/monster.png',64, 64);
-	        game.load.spritesheet('gun', 'assets/image/guns.png', 64, 64);
+	        game.load.audio('gameMusic', ['assets/sound/gameMusic.mp3']);
+	        game.load.spritesheet('player', 'assets/image/spritesheet/player.png', 39, 49);
 	        game.load.spritesheet('dead', 'assets/image/explosion.png', 64, 64, 23);
 
 	        // Map
 	        game.load.image('ground', 'assets/image/game/grass.png');
-	        game.load.image('earth', 'assets/image/light_grass.png');
+	        game.load.image('earth', 'assets/image/background/light_grass.png');
 
 	        // Items:
-	        game.load.image('bullet', 'assets/image/bullet.png');
-	        game.load.image('healthPack', 'assets/image/health.png');
-	        game.load.image('armorPack', 'assets/image/armor.png');
+	        game.load.image('bullet', 'assets/image/game/bullet.png');
+	        game.load.image('healthPack', 'assets/image/game/health.png');
+	        game.load.image('armorPack', 'assets/image/game/armor.png');
+	        game.load.image('target', 'assets/image/game/target.png');
 
 	        // Sound:
-	        game.load.audio('starSound', ['assets/sound/swish.mp3']);
+	        game.load.audio('bulletFired', ['assets/sound/bulletFired.mp3']);
+
 		},
 
 		create: function () {

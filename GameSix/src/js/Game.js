@@ -11,22 +11,32 @@ BasicGame.Game = function (game) {
   var gamePageBackground = null;
   var fire=false;
   var map=null;
-  var music=null;
   var x=null;
   var y=null;
   var weapon = null;
-  var enemies=[];
-  var explosions;
-  var deathPool;
-  var enemyBullets=null;
+  var explosions=null;
+  var deathPool=null;
+  var enemyBullets=null; 
+  var target=null;
+  var targets=null;
+  var targetPoint=null;
+  var targetPointTotal=null;
+  // Music
+  var music=null;
+  var bulletSound=null;
+
+  // Enemies:
+  var enemies=null;
+  var enemySpeed = 500;   
+  var enemiesTotal = 0;
+  var enemiesAlive = 0;
 
   // Stats:
   var armorLevel = 0;
   var armorTotal=100;
   var healthLevel = 0;
   var healthTotal=100;
-  var enemiesTotal = 0;
-  var enemiesAlive = 0;
+  var timeLevel=null;
 
   // Weapon stat:
   let pistol=800;
@@ -37,6 +47,7 @@ BasicGame.Game = function (game) {
   var healthPackPlayer=null;
   var armorPackPlayer=null;
   var enemyBulletPlayer=null;
+  var targetPlayer=null;
 
   // Spawn
   var healthPackSpawn=null;
@@ -54,18 +65,8 @@ BasicGame.Game = function (game) {
     game.state.start('Win');
   }
 
-  function killPlayer(){
-    player.kill();
-    music.stop();
-    game.state.start('GameOver');
-  }
-
-  function upgradeGunToMachineGun(){
-    weapon.fireRate = machineGun;
-  }
-
   function spawnHealth(){
-    healthPackSpawn = healthPack.create(50,50,'healthPack');
+    healthPackSpawn = healthPack.create(350,400,'healthPack');
     //healthPack.create(Math.random()*800, Math.random()*800, 'healthPack');
   }
 
@@ -78,7 +79,7 @@ BasicGame.Game = function (game) {
   }
 
   function spawnArmor(){
-    armorPackSpawn = armorPack.create(80,80,'armorPack');
+    armorPackSpawn = armorPack.create(450,400,'armorPack');
   }
 
   function collectArmor(player, armorPack){
@@ -91,31 +92,39 @@ BasicGame.Game = function (game) {
       armorLevel+=50;
   }
 
-  function weaponUpgrade(){
-
+  function shootTarget(player){
+    target.kill();
+    targetPoint+=1;
+    targetSpawn();
   }
 
+  function targetSpawn(){
+    target = game.add.sprite(Math.random()*800, 100, 'target');
+    target.enableBody=true;
+    game.physics.enable(target, Phaser.Physics.ARCADE);
+  }
 
   return {
     create: function () {
       // Set world
       game.physics.startSystem(Phaser.Physics.ARCADE);
-      game.world.setBounds(-1000, -1000, 2000, 2000);
+      game.world.setBounds(0,0,800,600);
       // FPS
       game.time.desiredFps = 60;
       // Map
-      gamePageBackground = game.add.sprite(0, 0, 'gameBG');
       land = game.add.tileSprite(0, 0, 800, 600, 'earth');
       land.fixedToCamera = true;
 
       // Music
       music = game.add.audio('gameMusic');
-
-      //music.play();
+      music.play();
       music.volume = 0.5;
+      // Sound
+      bulletSound = game.add.audio('bulletFired');
+      bulletSound.volume = 0.2;
 
       // Player
-      player = game.add.sprite(0, 0, 'player');
+      player = game.add.sprite(400, 300, 'player');
       game.physics.enable(player, Phaser.Physics.ARCADE);
         // Re-sizing player's hitbox
       player.body.setSize(29,52,4,-3);
@@ -135,39 +144,21 @@ BasicGame.Game = function (game) {
       weapon.fireRate = pistol;
       weapon.bulletAngleVariance=2;
       weapon.trackSprite(player, 20, 20);
-      // Enemies
-      for (var i = 0; i < enemiesTotal; i++)
-      {
-        enemies.push(new EnemyTank(i, game, tank, enemyBullets));
-      }
-      deathPool = game.add.group();
-      // Death enemies
-      for(var i=0; i<10;i++)
-      {
-        var explosionAnimation = deathPool.create(0, 0, 'dead', [0], false);
-        explosionAnimation.anchor.setTo(0.5, 0.5);
-        explosionAnimation.animations.add('dead');
-      }
-      // Enemies bullet
-      enemyBullets = game.add.group();
-      enemyBullets.enableBody = true;
-      enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
-      enemyBullets.createMultiple(100, 'bullet');
-      enemyBullets.setAll('anchor.x', 0.5);
-      enemyBullets.setAll('anchor.y', 0.5);
-      enemyBullets.setAll('outOfBoundsKill', true);
-      enemyBullets.setAll('checkWorldBounds', true);
+
+      target = game.add.sprite(200, 20, 'target');
+      //targets = game.add.group();
+      target.enableBody=true;
+      game.physics.enable(target, Phaser.Physics.ARCADE);
+      targetPoint=0;
+      targetPointTotal=20;
 
       //STAT:
-        // Enemies
-      enemiesTotal = 50;
-      enemiesAlive = 50;
         // Health
       healthLevel = 100;
       healthTotal = 100;
       armorLevel = 0;
       armorTotal = 100;
-
+      
       healthPack = game.add.group();
       healthPack.enableBody = true;
       armorPack = game.add.group();
@@ -179,24 +170,25 @@ BasicGame.Game = function (game) {
 
     // Debug
     render: function(){
-      //game.debug.bodyInfo(player, 32,80);
-      //game.debug.body(player);
       game.debug.text('Health: ' + healthLevel + '/' + healthTotal, 30, 30);
       game.debug.text('Armor:  ' + armorLevel + '/' + armorTotal, 30, 50);
-      game.debug.text('Enemies: ' + enemiesAlive + '/' + enemiesTotal, 30, 70);
+      game.debug.text('Target: ' + targetPoint + '/' + targetPointTotal, 30, 70);
+      game.debug.text('Shoot out the targets!', 330, 20);
+      game.debug.text('Arrow keys to move', 335, 480);
+      game.debug.text('Space to shoot', 350, 500);
+      game.debug.text('Time: ' + timeLevel, 694, 20);
     },
 
     update: function () {
       // Interaction:
       healthPackPlayer = game.physics.arcade.collide(healthPack, player, collectHealth, null, this);
       armorPackPlayer = game.physics.arcade.collide(armorPack, player, collectArmor, null, this);
- 
-
-      //  Reset the players velocity (movement)
+      targetPlayer = game.physics.arcade.overlap(weapon.bullets, target, shootTarget, null, this);
+       //Stat:
+      timeLevel = this.game.time.totalElapsedSeconds();
+      //  Reset the player's velocity/movement
       player.body.velocity.x = 0;
       player.body.velocity.y=0;
-
-
 
       // KEY Control
       var cursors = game.input.keyboard.createCursorKeys();
@@ -228,29 +220,16 @@ BasicGame.Game = function (game) {
       }
 
       // Space key
-      if(spaceKey.isDown){
+      if(spaceKey.isDown&&!bulletSound.isPlaying){
           weapon.fire();
+          bulletSound.play();
       }
 
-      // if (this.game.physics.arcade.distanceBetween(this.enemies, this.player) < 300)
-      // {
-      //     if (this.game.time.now > this.nextFire && this.bullets.countDead() > 0)
-      //     {
-      //         this.nextFire = this.game.time.now + this.fireRate;
-
-      //         var bullet = this.bullets.getFirstDead();
-
-      //         bullet.reset(this.enemies.x, this.enemies.y);
-
-      //         bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 500);
-      //     }
-      // }
-
-      // Winner
-      // if(score>=1000)
-      // {
-      //   winGame();
-      // }
+      //Winner
+      if(targetPoint==20)
+      {
+        winGame();
+      }
     },
   }
 };
