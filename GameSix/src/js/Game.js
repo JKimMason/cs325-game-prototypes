@@ -176,7 +176,7 @@ BasicGame.Game = function (game) {
     // Debug
     render: function(){
       //game.debug.bodyInfo(target, 32, 200); 
-      game.debug.body(target);
+      //game.debug.body(target);
       game.debug.text('Health: ' + healthLevel + '/' + healthTotal, 30, 30);
       game.debug.text('Armor:  ' + armorLevel + '/' + armorTotal, 30, 50);
       game.debug.text('Target: ' + targetPoint + '/' + targetPointTotal, 30, 70);
