@@ -222,7 +222,7 @@ BasicGame.Game = function (game) {
       }
 
       //Winner
-      if(targetPoint==1)
+      if(targetPoint==20)
       {
         winGame();
       }
