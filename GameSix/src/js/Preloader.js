@@ -27,7 +27,6 @@ BasicGame.Preloader = function (game) {
 	        // Game
 	        game.load.audio('gameMusic', ['assets/sound/gameMusic.mp3']);
 	        game.load.spritesheet('player', 'assets/image/spritesheet/player.png', 39, 49);
-	        game.load.spritesheet('dead', 'assets/image/explosion.png', 64, 64, 23);
 
 	        // Map
 	        game.load.image('ground', 'assets/image/game/grass.png');
@@ -41,6 +40,7 @@ BasicGame.Preloader = function (game) {
 
 	        // Sound:
 	        game.load.audio('bulletFired', ['assets/sound/bulletFired.mp3']);
+	        game.load.audio('bulletHit', ['assets/sound/bulletHit.mp3']);
 
 		},
 

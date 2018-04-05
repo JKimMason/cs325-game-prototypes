@@ -29,9 +29,6 @@ BasicGame.MainMenu = function (game) {
 
 	// Functions
 	return {
-		// init: function(){
-		// 	titleText = game.make.text(50, 10, "Title");
-		// },
 		 init: function () {
     		titleText = game.make.text(game.world.centerX, 105, "Shooter", {
      			font: 'bold 65pt Impact',

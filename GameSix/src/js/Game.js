@@ -24,12 +24,7 @@ BasicGame.Game = function (game) {
   // Music
   var music=null;
   var bulletSound=null;
-
-  // Enemies:
-  var enemies=null;
-  var enemySpeed = 500;   
-  var enemiesTotal = 0;
-  var enemiesAlive = 0;
+  var bulletHitSound=null;
 
   // Stats:
   var armorLevel = 0;
@@ -39,9 +34,7 @@ BasicGame.Game = function (game) {
   var timeLevel=null;
 
   // Weapon stat:
-  let pistol=800;
-  let machineGun=500;
-  let sniper=1000;
+  let pistol=1500;
 
   // Collision
   var healthPackPlayer=null;
@@ -93,6 +86,7 @@ BasicGame.Game = function (game) {
   }
 
   function shootTarget(player){
+    bulletHitSound.play();
     target.kill();
     targetPoint+=1;
     targetSpawn();
@@ -122,6 +116,8 @@ BasicGame.Game = function (game) {
       // Sound
       bulletSound = game.add.audio('bulletFired');
       bulletSound.volume = 0.2;
+      bulletHitSound = game.add.audio('bulletHit');
+      bulletSound.volume = 0.4;
 
       // Player
       player = game.add.sprite(400, 300, 'player');
@@ -226,7 +222,7 @@ BasicGame.Game = function (game) {
       }
 
       //Winner
-      if(targetPoint==20)
+      if(targetPoint==1)
       {
         winGame();
       }

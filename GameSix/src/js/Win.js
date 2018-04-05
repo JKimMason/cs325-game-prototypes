@@ -1,8 +1,9 @@
 BasicGame.Win = function (game) {
+    var musicPiece = null;
 
     function gotoMainMenu(){
-		//music.stop();
-		game.state.start('MainMenu');
+		  deathMusic.stop();
+		  game.state.start('MainMenu');
 	}
 
     function addQuake() {
@@ -32,8 +33,8 @@ BasicGame.Win = function (game) {
     }
 	return {
 	       preload: function () {
-               game.load.image('winPageBG', 'assets/image/background/winner.jpg');
-			   game.load.audio('winMusic', ['assets/sound/darksoulDead.mp3']);
+            game.load.image('winPageBG', 'assets/image/background/winner.jpg');
+	           game.load.audio('winMusic', ['assets/sound/JamieFoxx-Winner.mp3']);
            },
 
            addCredit: function(task, author) {
@@ -45,23 +46,22 @@ BasicGame.Win = function (game) {
            },
 
 		create: function () {
-			// deathMusic = game.add.audio('gameOverMusic');
-            //deathMusic.play();
+			deathMusic = game.add.audio('winMusic');
+      deathMusic.play();
 			var margin = 50;
 			var x = -margin;
-  			var y = -margin;
-  			var w = game.world.width + margin * 2;
-  			var h = game.world.height + margin * 2;
-  			game.world.setBounds(x, y, w, h);
-  			game.world.camera.position.set(0);
+  		var y = -margin;
+  		var w = game.world.width + margin * 2;
+  		var h = game.world.height + margin * 2;
+  		game.world.setBounds(x, y, w, h);
+  		game.world.camera.position.set(0);
 			gameOverPageBackground = game.add.sprite(155, 68, 'winPageBG');
 			addQuake();
 			var topTextStyle = { font: "30px Verdana", fill: "#666666", align: "center" };
-    	    var topText = game.add.text(game.world.centerX, 15, "You win!!~", topTextStyle );
-            topText.fixedToCamera = true;
-    	    topText.anchor.setTo( 0.5, 0.0 );
-
-            playButton = game.add.button(255, 280, 'playButton', gotoMainMenu, 'MainMenu', this.gotoMainMenu, this);
-        }
+    	var topText = game.add.text(game.world.centerX, 15, "You win!!~", topTextStyle );
+      topText.fixedToCamera = true;
+    	topText.anchor.setTo( 0.5, 0.0 );
+      playButton = game.add.button(255, 280, 'playButton', gotoMainMenu, 'MainMenu', this.gotoMainMenu, this);
+    }
 	}
 };
