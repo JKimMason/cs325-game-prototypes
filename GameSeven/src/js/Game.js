@@ -176,29 +176,34 @@ BasicGame.Game = function (game) {
   }
 
 
-  function loseHP(player, enemies){
+  function loseHP(player){
+    robotShotPlayerSound.play();
     var diff=0;
-    if(armorLevel>=30)
+    if(armorLevel>=10)
     {
-      armorLevel-=30;
+      armorLevel-=10;
     }
-    else if(armorLevel==30)
+    else if(armorLevel==10)
     {
       armorLevel=0;
     }
-    else if(armorLevel<30)
+    else if(armorLevel<10 && armorLevel>0)
     {
-      diff=30-armorLevel;
+      diff=10-armorLevel;
       armorLevel=0;
-      if(healthLevel>30){
-        healthLevel-=30;
+      if(healthLevel>10){
+        healthLevel-=diff;
       }
-      else if(healthLevel<=30){
+      else if(healthLevel<=10){
         healthLevel==0;
       }
     }
+    else if(armorLevel==0 && healthLevel>10)
+    {
+      healthLevel-=10;
+    }
 
-    if(healthLevel<=30)
+    if(healthLevel<=10)
     {
       player.kill();
       stabSound.play();
@@ -290,9 +295,9 @@ BasicGame.Game = function (game) {
       // Enemies bullet:
       eWeapon = game.add.weapon(30, 'bullet');
       eWeapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-      eWeapon.bulletSpeed = 1000;
+      eWeapon.bulletSpeed = 1200;
       eWeapon.fireRate = 100;
-      eWeapon.bulletAngleVariance=4;
+      eWeapon.bulletAngleVariance=3;
       eWeapon.trackSprite(enemies, 20, 20);
 
       // Weapon
@@ -349,7 +354,7 @@ BasicGame.Game = function (game) {
       armorPackPlayer = game.physics.arcade.collide(armorPack, player, collectArmor, null, this);
       upgradePackPlayer = game.physics.arcade.collide(upgradePack, player, collectUpgrade, null, this);
       enemiesPlayer = game.physics.arcade.collide(enemies, player, instantDeath, null, this);
-      enemiesBulletPlayer = game.physics.arcade.collide(enemies, player, loseHP, null, this);
+      enemiesBulletPlayer = game.physics.arcade.collide(eWeapon.bullets, enemies, player, loseHP, null, this);
       targetPlayer = game.physics.arcade.overlap(weapon.bullets, enemies, shootEnemies, null, this);
 
        //Stat:
