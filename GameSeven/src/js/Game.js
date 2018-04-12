@@ -213,7 +213,16 @@ BasicGame.Game = function (game) {
   }
 
   function enemiesSpawn(){
-    enemies = game.add.sprite(-20, Math.random()*500, 'enemies');
+    var x = Math.random()*10;
+    if(x>=5)
+    {
+      enemies = game.add.sprite(-20, Math.random()*500, 'enemies');
+    }
+    else if(x<5)
+    {
+      enemies = game.add.sprite(800, Math.random()*500, 'enemies');
+    }
+    
     enemies.enableBody=true;
     game.physics.enable(enemies, Phaser.Physics.ARCADE);
     enemies.body.setSize(38,65,10,-3);
@@ -337,8 +346,8 @@ BasicGame.Game = function (game) {
     render: function(){
       //game.debug.bodyInfo(player, 32, 400); 
       
-      game.debug.body(player);
-      game.debug.body(eWeapon.bullets);
+      //game.debug.body(player);
+      //game.debug.body(eWeapon.bullets);
       //game.debug.bodyInfo(enemies, 32, 200);
       game.debug.text('Health: ' + healthLevel + '/' + healthTotal, 30, 30);
       game.debug.text('Armor:  ' + armorLevel + '/' + armorTotal, 30, 50);
@@ -371,9 +380,11 @@ BasicGame.Game = function (game) {
 
       if(player.body.x>enemies.body.x){
         enemies.animations.play('right');
+        eWeapon.fireAngle = Phaser.ANGLE_RIGHT;
       }
       else if(player.body.x<enemies.body.x){
         enemies.animations.play('left');
+        eWeapon.fireAngle = Phaser.ANGLE_LEFT;
       }
 
 
@@ -420,7 +431,6 @@ BasicGame.Game = function (game) {
       if((Math.abs(player.body.y-enemies.body.y)<50)){
         eWeapon.trackSprite(enemies, 20, 20);
         if(!robotBulletSound.isPlaying){
-          eWeapon.fireAngle = Phaser.ANGLE_RIGHT;
           eWeapon.fire();
           robotBulletSound.play();
         }
