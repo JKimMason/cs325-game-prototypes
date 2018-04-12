@@ -44,7 +44,9 @@ BasicGame.Game = function (game) {
 
   // Weapon stat:
   let pistol=1500;
-  let machineGun=10;
+  let machineGun=50;
+  let godGun=10;
+
   // Collision
   var healthPackPlayer=null;
   var armorPackPlayer=null;
@@ -179,17 +181,17 @@ BasicGame.Game = function (game) {
   function loseHP(player){
     robotShotPlayerSound.play();
     var diff=0;
-    if(armorLevel>=10)
+    if(armorLevel>=5)
     {
-      armorLevel-=10;
+      armorLevel-=5;
     }
-    else if(armorLevel==10)
+    else if(armorLevel==5)
     {
       armorLevel=0;
     }
-    else if(armorLevel<10 && armorLevel>0)
+    else if(armorLevel<5 && armorLevel>0)
     {
-      diff=10-armorLevel;
+      diff=5-armorLevel;
       armorLevel=0;
       if(healthLevel>10){
         healthLevel-=diff;
@@ -225,7 +227,7 @@ BasicGame.Game = function (game) {
     
     enemies.enableBody=true;
     game.physics.enable(enemies, Phaser.Physics.ARCADE);
-    enemies.body.setSize(38,65,10,-3);
+    enemies.body.setSize(33,58,10,0);
     enemiesHP=100;
     enemies.animations.add('right', [35,34,33,32,31,30,29,28,27], 15, true);
     enemies.animations.add('left', [44,43,42,41,40,39,38,37], 15, true);
@@ -294,7 +296,7 @@ BasicGame.Game = function (game) {
       // enemies.body.drag.set(0.2);
       // enemies.body.maxVelocity.setTo(200,200);
       // enemies.body.collideWorldBounds = true;
-      enemies.body.setSize(38,65,10,-3);
+      enemies.body.setSize(33,58,10,0);
       enemiesHP=100;
       enemies.animations.add('right', [35,34,33,32,31,30,29,28,27], 15, true);
       enemies.animations.add('left', [44,43,42,41,40,39,38,37], 15, true);
@@ -346,7 +348,7 @@ BasicGame.Game = function (game) {
     render: function(){
       //game.debug.bodyInfo(player, 32, 400); 
       
-      //game.debug.body(player);
+      //game.debug.body(enemies);
       //game.debug.body(eWeapon.bullets);
       //game.debug.bodyInfo(enemies, 32, 200);
       game.debug.text('Health: ' + healthLevel + '/' + healthTotal, 30, 30);
