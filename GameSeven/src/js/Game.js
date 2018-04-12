@@ -41,11 +41,14 @@ BasicGame.Game = function (game) {
   var healthLevel = 0;
   var healthTotal=100;
   var timeLevel=null;
+  var upgradeLevel=0;
 
   // Weapon stat:
   let pistol=1500;
-  let machineGun=50;
-  let godGun=10;
+  let levelOneUpgrade=500;
+  let levelTwoUpgrade=100;
+  let levelThreeUpgrade=50;
+  let levelFourUpgrade=10;
 
   // Collision
   var healthPackPlayer=null;
@@ -100,13 +103,20 @@ BasicGame.Game = function (game) {
   }
 
   function collectHealth(player, healthPack){
-    game.time.events.add(Phaser.Timer.SECOND *3, randSpawnHealth, this);
+    if(healthLevel<100){
+      game.time.events.add(Phaser.Timer.SECOND *3, randSpawnHealth, this);
+    }
+    else{
+      game.time.events.add(Phaser.Timer.SECOND *20, randSpawnHealth, this);
+    }
     healthSound.play();
     healthPack.kill();
     if(healthLevel<healthTotal)
       healthLevel+=25;
     else if(healthLevel==healthTotal)
       healthLevel+=5;
+    else if(healthLevel>healthTotal)
+      healthLevel+=0;
   }
 
   function spawnArmor(){
@@ -117,21 +127,66 @@ BasicGame.Game = function (game) {
     armorPack.create(Math.random()*600, Math.random()*500, 'armorPack');
   }
 
-  function spawnUpgrade(){
-    upgradePack = upgradePack.create(500,400,'upgradePack');
+  function randSpawnUpgrade(){
+    upgradePack.create(Math.random()*600, Math.random()*500, 'upgradePack');
   }
 
-  function collectUpgrade(upgradePack, player){
+  function spawnUpgrade(){
+    upgradePackSpawn = upgradePack.create(500,400,'upgradePack');
+  }
+
+  function collectUpgrade(player, upgradePack){
+    if(upgradeLevel<3){
+        game.time.events.add(Phaser.Timer.SECOND *5, randSpawnUpgrade, this);
+    }
     upgradeSound.play();
     upgradePack.kill();
-    bulletSound = newBulletSound;
-    weapon.bulletSpeed = 2000;
-    weapon.fireRate = machineGun;
-    bulletHitSound = bulletHitSoundTwo;
+    
+    if(weapon.fireRate==pistol){
+      weapon.fireRate = levelOneUpgrade
+      weapon.bulletSpeed==1500;
+      bulletHitSound = bulletHitSound;
+      bulletSound = bulletSound;
+      upgradeLevel=1;
+    }
+    else if(weapon.fireRate==levelOneUpgrade){
+      weapon.fireRate = levelTwoUpgrade
+      weapon.bulletSpeed==2000;
+      bulletHitSound=bulletHitSoundTwo;
+      bulletSound = bulletSound;
+      upgradeLevel=2;
+    }
+    else if(weapon.fireRate==levelTwoUpgrade){
+      weapon.fireRate = levelThreeUpgrade
+      weapon.bulletSpeed = 2250;
+      bulletHitSound=bulletHitSoundTwo;
+      bulletSound = newBulletSound;
+      upgradeLevel=3;
+    }
+    else if(weapon.fireRate==levelThreeUpgrade){
+      weapon.fireRate = levelFourUpgrade
+      weapon.bulletSpeed = 2500;
+      bulletHitSound=bulletHitSoundTwo;
+      bulletSound = newBulletSound;
+      upgradeLevel=4;
+    }
+    else if(weapon.fireRate==levelFourUpgrade){
+      weapon.fireRate = levelFourUpgrade
+      weapon.bulletSpeed = 2500;
+      bulletHitSound=bulletHitSoundTwo;
+      bulletSound = newBulletSound;
+      upgradeLevel=4;
+    }
   }
 
   function collectArmor(player, armorPack){
-    game.time.events.add(Phaser.Timer.SECOND *3, randSpawnArmor, this);
+    if(armorLevel<100){
+      game.time.events.add(Phaser.Timer.SECOND *3, randSpawnArmor, this);
+      //randSpawnArmor();
+    }
+    else{
+      game.time.events.add(Phaser.Timer.SECOND *20, randSpawnArmor, this);
+    }
     armorSound.play();
     armorPack.kill();
     if(armorLevel==armorTotal)
@@ -351,9 +406,10 @@ BasicGame.Game = function (game) {
       //game.debug.body(enemies);
       //game.debug.body(eWeapon.bullets);
       //game.debug.bodyInfo(enemies, 32, 200);
-      game.debug.text('Health: ' + healthLevel + '/' + healthTotal, 30, 30);
-      game.debug.text('Armor:  ' + armorLevel + '/' + armorTotal, 30, 50);
-      game.debug.text('Enemies: ' + targetPoint + '/' + targetPointTotal, 30, 70);
+      game.debug.text('Health:  ' + healthLevel + '/' + healthTotal, 30, 30);
+      game.debug.text('Armor:   ' + armorLevel + '/' + armorTotal, 30, 50);
+      game.debug.text('Upgrade: ' + upgradeLevel, 30, 70);
+      game.debug.text('Enemies: ' + targetPoint + '/' + targetPointTotal, 30, 90);
       game.debug.text('Shoot the enemies!', 330, 20);
       game.debug.text('Arrow keys to move', 335, 480);
       game.debug.text('Space to shoot', 350, 500);
@@ -437,7 +493,6 @@ BasicGame.Game = function (game) {
           robotBulletSound.play();
         }
       }
-
 
       //Winner
       if(targetPoint==25)
