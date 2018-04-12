@@ -290,8 +290,8 @@ BasicGame.Game = function (game) {
       // Enemies bullet:
       eWeapon = game.add.weapon(30, 'bullet');
       eWeapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-      eWeapon.bulletSpeed = 1200;
-      eWeapon.fireRate = pistol;
+      eWeapon.bulletSpeed = 1000;
+      eWeapon.fireRate = 100;
       eWeapon.bulletAngleVariance=4;
       eWeapon.trackSprite(enemies, 20, 20);
 
@@ -415,7 +415,6 @@ BasicGame.Game = function (game) {
         eWeapon.trackSprite(enemies, 20, 20);
         if(!robotBulletSound.isPlaying){
           eWeapon.fireAngle = Phaser.ANGLE_RIGHT;
-
           eWeapon.fire();
           robotBulletSound.play();
         }
