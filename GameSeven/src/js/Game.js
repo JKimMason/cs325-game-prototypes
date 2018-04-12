@@ -309,7 +309,7 @@ BasicGame.Game = function (game) {
       weapon.trackSprite(player, 20, 20);
 
       targetPoint=0;
-      targetPointTotal=50;
+      targetPointTotal=25;
 
       //STAT:
         // Health
@@ -427,7 +427,7 @@ BasicGame.Game = function (game) {
 
 
       //Winner
-      if(targetPoint==50)
+      if(targetPoint==25)
       {
         winGame();
       }
