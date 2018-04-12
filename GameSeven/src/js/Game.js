@@ -297,7 +297,7 @@ BasicGame.Game = function (game) {
       eWeapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
       eWeapon.bulletSpeed = 1200;
       eWeapon.fireRate = 100;
-      eWeapon.bulletAngleVariance=3;
+      eWeapon.bulletAngleVariance=1;
       eWeapon.trackSprite(enemies, 20, 20);
 
       // Weapon
@@ -336,8 +336,9 @@ BasicGame.Game = function (game) {
     // Debug
     render: function(){
       //game.debug.bodyInfo(player, 32, 400); 
-      //game.debug.body(target);
-      //game.debug.body(player);
+      
+      game.debug.body(player);
+      game.debug.body(eWeapon.bullets);
       //game.debug.bodyInfo(enemies, 32, 200);
       game.debug.text('Health: ' + healthLevel + '/' + healthTotal, 30, 30);
       game.debug.text('Armor:  ' + armorLevel + '/' + armorTotal, 30, 50);
@@ -354,7 +355,7 @@ BasicGame.Game = function (game) {
       armorPackPlayer = game.physics.arcade.collide(armorPack, player, collectArmor, null, this);
       upgradePackPlayer = game.physics.arcade.collide(upgradePack, player, collectUpgrade, null, this);
       enemiesPlayer = game.physics.arcade.collide(enemies, player, instantDeath, null, this);
-      enemiesBulletPlayer = game.physics.arcade.collide(eWeapon.bullets, enemies, player, loseHP, null, this);
+      enemiesBulletPlayer = game.physics.arcade.overlap(eWeapon.bullets, player, loseHP, null, this);
       targetPlayer = game.physics.arcade.overlap(weapon.bullets, enemies, shootEnemies, null, this);
 
        //Stat:
