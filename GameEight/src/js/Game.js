@@ -86,6 +86,12 @@ BasicGame.Game = function (game) {
 		yourTreasure+=1;
 		diamond.kill();
 		targetPoint+=25;
+		// Refresh-mechanisms until iteration
+		playerLeftVelocity=-400;
+		playerRightVelocity=400;
+		yourTreasure=0;
+		upgradeLevel=0;
+		healthLevel=50;
 	}
 
 	function collectHP(player, item){
