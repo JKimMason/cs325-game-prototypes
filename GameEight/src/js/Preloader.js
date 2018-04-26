@@ -28,6 +28,7 @@ BasicGame.Preloader = function (game) {
 	        game.load.spritesheet('player', 'assets/image/spritesheet/runner.png', 54, 70);
 	        game.load.spritesheet('lightning', 'assets/image/spritesheet/lightning.png', 54.5 ,130)
 	        game.load.spritesheet('bat', 'assets/image/spritesheet/bat.png', 33, 31);
+	        game.load.spritesheet('horse', 'assets/image/spritesheet/horse.png', 34.5, 34)
 
 	        //game.load.spritesheet('enemies', 'assets/image/spritesheet/robots.png', 55, 65);
 	        //game.load.spritesheet('explosion', 'assets/image/spritesheet/explosion.png', 64, 64);

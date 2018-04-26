@@ -42,6 +42,7 @@ BasicGame.Game = function (game) {
 
 	// Enemies:
 	var bat=null;
+	var horse=null;
 
 	// Interaction
 	var healthPackPlayer=null;
@@ -194,11 +195,12 @@ BasicGame.Game = function (game) {
   		shine = game.add.audio('diamondSound');
 
 	    // Player
-	    player = game.add.sprite(0, 480, 'player');
+	    player = game.add.sprite(50, 480, 'player');
 	    game.physics.enable(player, Phaser.Physics.ARCADE);
 	    player.body.acceleration.x=5;
 	    // Re-sizing player's hitbox
-	    player.body.setSize(29,52,4,-3);
+	    					//X, Y, right, down
+	    player.body.setSize(33,60,15,10);
 	    // Make it bounce off of the world bounds.
 	    player.body.collideWorldBounds = true;
 	    // Enables camera to follow player.
@@ -206,6 +208,14 @@ BasicGame.Game = function (game) {
 	    healthLevel=50;
 	    upgradeLevel=0;
 
+	    // Enemy
+	    horse = game.add.sprite(20,490,'horse');
+	    game.physics.enable(horse, Phaser.Physics.ARCADE);
+	    horse.body.setSize(25,25,7,3);
+	    horse.animations.add('right', [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49]);
+	    horse.animations.add('left', [114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167]);
+
+	    // Enemies' partners
 	    bat = game.add.sprite(500, 200, 'bat');
 	    game.physics.enable(bat, Phaser.Physics.ARCADE);
 	    bat.animations.add('fly', [0,1,2,3,4,5,6,7,8,9,8,7,6,5,4,3,2], 20, true);
@@ -221,7 +231,7 @@ BasicGame.Game = function (game) {
 		blurY = game.add.filter('BlurY');
 
 		// Food
-		item = game.add.sprite(300, 480, 'item');
+		item = game.add.sprite(350, 480, 'item');
 		game.physics.enable(item, Phaser.Physics.ARCADE);
 		item.frame=0;
 		
@@ -253,6 +263,9 @@ BasicGame.Game = function (game) {
     // Debug
     render: function(){
     	//game.debug.bodyInfo(player, 32, 400); 
+    	//game.debug.bodyInfo(horse, 32, 410);
+    	//game.debug.body(horse);
+    	//game.debug.body(player);
     	game.debug.text('Health:  ' + healthLevel + '/' + healthTotal, 30, 30);
         game.debug.text('Upgrade: ' + upgradeLevel, 30, 50);
         game.debug.text('Enemies\' Treasures: ' + enemiesTreasure, 30, 90);
@@ -290,6 +303,7 @@ BasicGame.Game = function (game) {
     	player.body.velocity.x=0;
     	player.body.velocity.y=0;
 
+    	//Enemies movement:
 
     	// KEY Control
     	var cursors = game.input.keyboard.createCursorKeys();
