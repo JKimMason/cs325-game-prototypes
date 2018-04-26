@@ -27,6 +27,7 @@ BasicGame.Preloader = function (game) {
 	        // Game
 	        game.load.spritesheet('player', 'assets/image/spritesheet/runner.png', 54, 70);
 	        game.load.spritesheet('lightning', 'assets/image/spritesheet/lightning.png', 54.5 ,130)
+	        game.load.spritesheet('bat', 'assets/image/spritesheet/bat.png', 33, 31);
 
 	        //game.load.spritesheet('enemies', 'assets/image/spritesheet/robots.png', 55, 65);
 	        //game.load.spritesheet('explosion', 'assets/image/spritesheet/explosion.png', 64, 64);
@@ -44,7 +45,7 @@ BasicGame.Preloader = function (game) {
      		//game.load.tilemap('level1', 'assets/map/level1.json', null, Phaser.Tilemap.TILED_JSON);
 
 	        // Items:
-			game.load.spritesheet('item', 'assets/image/spritesheet/items.png', 48, 48, 200);
+			game.load.spritesheet('item', 'assets/image/spritesheet/items.png', 48, 48, 250);
 			//game.load.spritesheet('item', 'assets/image/spritesheet/items.png', 48, 48, 18);
 
 	        game.load.image('bullet', 'assets/image/game/bullet.png');
@@ -62,6 +63,7 @@ BasicGame.Preloader = function (game) {
 	        game.load.audio('gulp', ['assets/sound/gulp.mp3']);
 	        game.load.audio('upgrade', ['assets/sound/upgrade.mp3']);
 	        game.load.audio('passBullet', ['assets/sound/passBullet.mp3']);
+	        game.load.audio('diamondSound', ['assets/sound/diamondSound.mp3']);
 
 
 	        game.load.script('BlurX', 'https://cdn.rawgit.com/photonstorm/phaser-ce/master/filters/BlurX.js');

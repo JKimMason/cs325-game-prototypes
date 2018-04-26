@@ -27,18 +27,26 @@ BasicGame.Game = function (game) {
 	var targetPoint=null;
 	var item=null;
 	var items=null;
+
 	var healthLevel=null;
 	var healthTotal=100;
 	var healthItems=null;
+	var enemiesTreasure=0;
+	var yourTreasure=0;
 	var potion=null;
 	var potion2=null;
 	var upgradeLevel=null;
 	var timeLevel=null;
+	var diamond=null;
+	var lightning=null;
+
+	// Enemies:
+	var bat=null;
 
 	// Interaction
 	var healthPackPlayer=null;
 	var potionPackPlayer=null;
-	var potion2PackPlayer=null;
+	var diamondPackPlayer=null;
 
 	// Music
 	var music=null;
@@ -46,6 +54,7 @@ BasicGame.Game = function (game) {
 	var eat=null;
 	var gulp=null;
 	var upgrade=null;
+	var shine=null;
 
 	// Settings
 	var blurX=null;
@@ -72,6 +81,13 @@ BasicGame.Game = function (game) {
 		potion.kill();
 	}
 
+	function collectDiamond(player, diamond){
+		shine.play();
+		yourTreasure+=1;
+		diamond.kill();
+		targetPoint+=25;
+	}
+
 	function collectHP(player, item){
 		if(item.frame==0){
 			eat.play();
@@ -94,7 +110,6 @@ BasicGame.Game = function (game) {
     	blurY.blur = 5;
 	}
 
-
 	function dropSpeedBoost(player, item){
 		item.frame=192;
 	}
@@ -109,6 +124,27 @@ BasicGame.Game = function (game) {
 		game.paused=false;
 	}
 
+	function randSpawnItem(){
+    	items.create(Math.random()*400, 480, 'item');
+  	}
+
+	// function enemiesSpawn(){
+	//     var x = Math.random()*10;
+	//     if(x>=5)
+	//     {
+	//       bat = game.add.sprite(Math.random()*22000, 200, 'bat');
+	//     }
+	//     else if(x<5)
+	//     {
+	//       bat = game.add.sprite(Math.random()*11000, 200, 'bat');
+	//     }
+	    
+	//     at.enableBody=true;
+	//     game.physics.enable(enemies, Phaser.Physics.ARCADE);
+	//     bat = game.add.sprite(500, 200, 'bat');
+	//     game.physics.enable(bat, Phaser.Physics.ARCADE);
+	//     bat.animations.add('fly', [0,1,2,3,4,5,6,7,8,9,8,7,6,5,4,3,2], 20, true);
+	// }
 
   	return {
     	create: function () {
@@ -149,6 +185,7 @@ BasicGame.Game = function (game) {
   		eat = game.add.audio('eat');
   		gulp = game.add.audio('gulp');
   		upgrade = game.add.audio('upgrade');
+  		shine = game.add.audio('diamondSound');
 
 	    // Player
 	    player = game.add.sprite(0, 480, 'player');
@@ -163,14 +200,16 @@ BasicGame.Game = function (game) {
 	    healthLevel=50;
 	    upgradeLevel=0;
 
+	    bat = game.add.sprite(500, 200, 'bat');
+	    game.physics.enable(bat, Phaser.Physics.ARCADE);
+	    bat.animations.add('fly', [0,1,2,3,4,5,6,7,8,9,8,7,6,5,4,3,2], 20, true);
+
 	    // Animation movements
 	    	// Start
 	    player.animations.add('right', [0,1,2,3,4,5,6,7], 20, true);
 	    player.animations.add('left', [15,14,13,12,11,10,9,8], 20, true);
-
 	    player.animations.play('right');
 	    player.animations.stop();
-	    targetPoint=0;
 
       	blurX = game.add.filter('BlurX');
 		blurY = game.add.filter('BlurY');
@@ -185,8 +224,15 @@ BasicGame.Game = function (game) {
 		game.physics.enable(potion, Phaser.Physics.ARCADE);
 		potion.frame=179;
 
-		items = game.add.group();
-		items.enableBody.true;
+		// Diamond
+		diamond = game.add.sprite(Math.random()*22000, 480, 'item');
+		game.physics.enable(diamond, Phaser.Physics.ARCADE);
+		diamond.frame=233;
+
+
+		// Lightning
+		//lightning = game.add.sprite(500, 400, 'lightning');
+		//game.physics.enable(lightning, Phaser.Physics.ARCADE);
 
 		// Start
     	blurX.blur = 0;
@@ -194,32 +240,33 @@ BasicGame.Game = function (game) {
 
 	    // Camera
 	    game.camera.follow(player);
+	    // initial points
+	   	targetPoint=0;
    	},
 
     // Debug
     render: function(){
     	//game.debug.bodyInfo(player, 32, 400); 
-      
-      //game.debug.body(enemies);
-      //game.debug.body(eWeapon.bullets);
-      //game.debug.bodyInfo(enemies, 32, 200);
     	game.debug.text('Health:  ' + healthLevel + '/' + healthTotal, 30, 30);
         game.debug.text('Upgrade: ' + upgradeLevel, 30, 50);
-      // game.debug.text('Enemies: ' + targetPoint + '/' + targetPointTotal, 30, 90);
+        game.debug.text('Enemies\' Treasures: ' + enemiesTreasure, 30, 90);
+        game.debug.text('Your Treasures: ' + yourTreasure, 30, 70);
         game.debug.text('Potion increases speed!', 320, 30);
         game.debug.text('Apple raises HP', 350, 50);
-      // game.debug.text('Space to shoot', 350, 500);
-        //game.debug.text('Time: ' + timeLevel, 694, 20);
+        game.debug.text('Find the diamond', 345, 70);
+        game.debug.text('Time: ' + timeLevel, 694, 20);
     },
 
     update: function () {
         // Interaction:
 		healthPackPlayer = game.physics.arcade.collide(player, item, collectHP, null, this);
 		potionPackPlayer = game.physics.arcade.collide(player, potion, bottleEat, null, this );
+		diamondPackPlayer = game.physics.arcade.collide(player, diamond, collectDiamond, null, this );
 
-		// Timer to drop items
-		//game.time.events.add(Phaser.Timer.SECOND*3, dropRandItems, this);
+		// Bat animation
+		bat.animations.play('fly');
 
+		// Sound enhancement
       	if(gulp.isPlaying){
 			upgrade.play();
       	}
@@ -230,10 +277,10 @@ BasicGame.Game = function (game) {
 			}
 		}
 
-       //Stat:
-        //timeLevel = this.game.time.totalElapsedSeconds();
+      	//Stat:
+        timeLevel = this.game.time.totalElapsedSeconds();
 
-      //  Reset the player's velocity/movement
+      	//  Reset the player's velocity/movement
     	player.body.velocity.x=0;
     	player.body.velocity.y=0;
 
@@ -259,6 +306,7 @@ BasicGame.Game = function (game) {
         	//game.paused=false;
       	}
 
+      	// Sound for running
       	if(player.body.velocity.x!=0 && upgradeLevel==1 && player.deltaX!=0 && !(player.deltaX>33 || player.deltaX<-33) ){
         	woosh.play();
         }
