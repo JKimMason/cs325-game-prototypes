@@ -1,3 +1,4 @@
+ls
 *.txt
 GameOne/node_modules
 GameOne/package-lock.json
@@ -13,3 +14,5 @@ GameSix/node_modules
 GameSix/package-lock.json
 GameSeven/node_modules
 GameSeven/package-lock.json
+GameEight/node_modules
+GameEight/package-lock.json

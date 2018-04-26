@@ -1,0 +1,273 @@
+"use strict";
+
+BasicGame.Game = function (game) {
+	//Map
+	var land=null;
+  	var land2=null;
+  	var land3=null;
+  	var land4=null;
+  	var land5=null;
+  	var land6=null;
+  	var land7=null;
+  	var land8=null;  	
+  	var land9=null;
+  	var land10=null;
+  	var Sumland1=null; 
+  	var Sumland2=null;
+  	var Sumland3=null;  
+  	var Sumland4=null; 
+  	var Sumland5=null;
+  	var Sumland6=null; 
+  	var Sumland7=null; 
+  	var Sumland8=null;
+  	var Sumland9=null; 
+	var Sumland10=null;
+
+	var player=null;
+	var targetPoint=null;
+	var item=null;
+	var items=null;
+	var healthLevel=null;
+	var healthTotal=100;
+	var healthItems=null;
+	var potion=null;
+	var potion2=null;
+	var upgradeLevel=null;
+	var timeLevel=null;
+
+	// Interaction
+	var healthPackPlayer=null;
+	var potionPackPlayer=null;
+	var potion2PackPlayer=null;
+
+	// Music
+	var music=null;
+	var woosh=null;
+	var eat=null;
+	var gulp=null;
+	var upgrade=null;
+
+	// Settings
+	var blurX=null;
+	var blurY=null; 
+	var playerLeftVelocity=-400;
+	var playerRightVelocity=400;
+
+	function quitGame(){
+		music.stop();
+	    game.state.start('Menu');
+	}
+
+	function winGame(){
+	    music.stop();
+	    game.state.start('Win');
+	}
+
+	function woosh(){
+		woosh.play();
+	}
+
+	function bottleEat(player, potion){
+		gulp.play();
+		potion.kill();
+	}
+
+	function collectHP(player, item){
+		if(item.frame==0){
+			eat.play();
+			item.kill();
+		}
+		if(healthLevel<healthTotal)
+      		healthLevel+=5;
+    	else if(healthLevel==healthTotal)
+      		healthLevel+=5;
+    	else if(healthLevel>healthTotal)
+      		healthLevel+=0;
+	}
+
+	function firstUpgradeSpeed(){
+		player.animations.add('right', [0,1,2,3,4,5,6,7], 120, true);
+	    player.animations.add('left', [15,14,13,12,11,10,9,8], 120, true);
+	    playerLeftVelocity=-2000;
+		playerRightVelocity=2000;
+		blurX.blur = 20;
+    	blurY.blur = 5;
+	}
+
+
+	function dropSpeedBoost(player, item){
+		item.frame=192;
+	}
+
+	function dropRandItems(player, item){
+		var rand = Math.random()*20;
+		items.frame=rand;
+		items.create(Math.random()*22000, 480, 'item');
+	}
+
+	function unpauseGame(){
+		game.paused=false;
+	}
+
+
+  	return {
+    	create: function () {
+      	// Set world
+	    game.physics.startSystem(Phaser.Physics.ARCADE);
+	    game.world.setBounds(0,0, 24000, 600);
+	    // FPS
+	    game.time.desiredFps = 60;
+	    // Map
+	    land = game.add.tileSprite(0, 0, 1200, 600, 'earth');
+	    land2 = game.add.tileSprite(1200, 0, 1200, 600, 'earth');
+	    land3 = game.add.tileSprite(2400, 0, 1200, 600, 'earth');
+	    land4 = game.add.tileSprite(3600, 0, 1200, 600, 'earth');
+	    land5 = game.add.tileSprite(4800, 0, 1200, 600, 'earth');
+	    land6 = game.add.tileSprite(6000, 0, 1200, 600, 'earth');
+	   	land7 = game.add.tileSprite(7200, 0, 1200, 600, 'earth');
+	    land8 = game.add.tileSprite(8400, 0, 1200, 600, 'earth');
+	    land9 = game.add.tileSprite(9600, 0, 1200, 600, 'earth');
+	    land10 = game.add.tileSprite(10800, 0, 1200, 600, 'earth');
+	   	Sumland1 = game.add.tileSprite(12000, 0, 1200, 600, 'summer');
+	   	Sumland2 = game.add.tileSprite(13200, 0, 1200, 600, 'summer');
+	   	Sumland3 = game.add.tileSprite(14400, 0, 1200, 600, 'summer');
+	   	Sumland4 = game.add.tileSprite(15600, 0, 1200, 600, 'summer');
+	   	Sumland5 = game.add.tileSprite(16800, 0, 1200, 600, 'summer');
+	   	Sumland6 = game.add.tileSprite(18000, 0, 1200, 600, 'summer');
+	   	Sumland7 = game.add.tileSprite(19200, 0, 1200, 600, 'summer');
+	   	Sumland8 = game.add.tileSprite(20400, 0, 1200, 600, 'summer');
+	   	Sumland9 = game.add.tileSprite(21600, 0, 1200, 600, 'summer');
+	   	Sumland10 = game.add.tileSprite(22800, 0, 1200, 600, 'summer');	    		   		   		   		   		   		   	
+
+      	// Music
+      	music = game.add.audio('gameMusic');
+	    music.play();
+        music.volume = 0.5;
+
+  		// Sound
+  		woosh = game.add.audio('woosh');
+  		eat = game.add.audio('eat');
+  		gulp = game.add.audio('gulp');
+  		upgrade = game.add.audio('upgrade');
+
+	    // Player
+	    player = game.add.sprite(0, 480, 'player');
+	    game.physics.enable(player, Phaser.Physics.ARCADE);
+	    player.body.acceleration.x=5;
+	    // Re-sizing player's hitbox
+	    player.body.setSize(29,52,4,-3);
+	    // Make it bounce off of the world bounds.
+	    player.body.collideWorldBounds = true;
+	    // Enables camera to follow player.
+	    game.camera.follow(player);
+	    healthLevel=50;
+	    upgradeLevel=0;
+
+	    // Animation movements
+	    	// Start
+	    player.animations.add('right', [0,1,2,3,4,5,6,7], 20, true);
+	    player.animations.add('left', [15,14,13,12,11,10,9,8], 20, true);
+
+	    player.animations.play('right');
+	    player.animations.stop();
+	    targetPoint=0;
+
+      	blurX = game.add.filter('BlurX');
+		blurY = game.add.filter('BlurY');
+
+		// Food
+		item = game.add.sprite(300, 480, 'item');
+		game.physics.enable(item, Phaser.Physics.ARCADE);
+		item.frame=0;
+		
+		// Potion
+		potion = game.add.sprite(1500, 480, 'item');
+		game.physics.enable(potion, Phaser.Physics.ARCADE);
+		potion.frame=179;
+
+		items = game.add.group();
+		items.enableBody.true;
+
+		// Start
+    	blurX.blur = 0;
+    	blurY.blur = 0;
+
+	    // Camera
+	    game.camera.follow(player);
+   	},
+
+    // Debug
+    render: function(){
+    	//game.debug.bodyInfo(player, 32, 400); 
+      
+      //game.debug.body(enemies);
+      //game.debug.body(eWeapon.bullets);
+      //game.debug.bodyInfo(enemies, 32, 200);
+    	game.debug.text('Health:  ' + healthLevel + '/' + healthTotal, 30, 30);
+        game.debug.text('Upgrade: ' + upgradeLevel, 30, 50);
+      // game.debug.text('Enemies: ' + targetPoint + '/' + targetPointTotal, 30, 90);
+        game.debug.text('Potion increases speed!', 320, 30);
+        game.debug.text('Apple raises HP', 350, 50);
+      // game.debug.text('Space to shoot', 350, 500);
+        //game.debug.text('Time: ' + timeLevel, 694, 20);
+    },
+
+    update: function () {
+        // Interaction:
+		healthPackPlayer = game.physics.arcade.collide(player, item, collectHP, null, this);
+		potionPackPlayer = game.physics.arcade.collide(player, potion, bottleEat, null, this );
+
+		// Timer to drop items
+		//game.time.events.add(Phaser.Timer.SECOND*3, dropRandItems, this);
+
+      	if(gulp.isPlaying){
+			upgrade.play();
+      	}
+		if(upgrade.isPlaying){
+			if(upgradeLevel==0){
+				firstUpgradeSpeed();
+				upgradeLevel=1;
+			}
+		}
+
+       //Stat:
+        //timeLevel = this.game.time.totalElapsedSeconds();
+
+      //  Reset the player's velocity/movement
+    	player.body.velocity.x=0;
+    	player.body.velocity.y=0;
+
+
+    	// KEY Control
+    	var cursors = game.input.keyboard.createCursorKeys();
+    	var spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+    	// Control
+    	if(cursors.left.isDown){
+        	player.body.velocity.x = playerLeftVelocity;
+        	player.filters = [blurX, blurY];
+        	player.animations.play('left');
+      	}
+      	else if (cursors.right.isDown){
+        	player.body.velocity.x = playerRightVelocity;
+        	player.filters = [blurX, blurY];
+        	player.animations.play('right');
+      	}
+      	else{
+      		player.filters=null;
+        	player.animations.stop();
+        	//game.paused=false;
+      	}
+
+      	if(player.body.velocity.x!=0 && upgradeLevel==1 && player.deltaX!=0 && !(player.deltaX>33 || player.deltaX<-33) ){
+        	woosh.play();
+        }
+
+    	//Winner
+    	if(targetPoint==25)
+    	{
+        	winGame();
+      	}
+    },
+	}
+};
