@@ -1,5 +1,4 @@
 "use strict";
-
 BasicGame.Game = function (game) {
 	//Map
 	var land=null;
