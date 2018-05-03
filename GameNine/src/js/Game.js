@@ -438,7 +438,7 @@ BasicGame.Game = function (game) {
 
       	// Music
       	music = game.add.audio('gameMusic');
-	    //music.play();
+	    music.play();
         music.volume = 0.5;
 
   		// Sound
