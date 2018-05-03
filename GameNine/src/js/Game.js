@@ -1,4 +1,5 @@
 "use strict";
+
 BasicGame.Game = function (game) {
 	//Map
 	var land=null;
@@ -436,9 +437,9 @@ BasicGame.Game = function (game) {
 	   	Sumland10 = game.add.tileSprite(22800, 0, 1200, 600, 'summer');	    		   		   		   		   		   		   	
 
       	// Music
-      	music = game.add.audio('gameMusic');
+      music = game.add.audio('gameMusic');
 	    music.play();
-        music.volume = 0.5;
+      music.volume = 0.5;
 
   		// Sound
   		woosh = game.add.audio('woosh');
@@ -676,11 +677,11 @@ BasicGame.Game = function (game) {
         }
 
     	//Winner
-    	if(yourTreasure>=100)
+    	if(yourTreasure>=50)
     	{
         	winGame();
       	}
-      	if(enemiesTreasure>=100)
+      	if(enemiesTreasure>=50)
       	{
       		music.stop();
       		game.state.start('GameOver');
