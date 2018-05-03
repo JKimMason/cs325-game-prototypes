@@ -51,6 +51,25 @@ BasicGame.Game = function (game) {
 	var direction=null;
 	var ebat = null;
 	var eweapon=null;
+	var distanceBat=null;
+	var distanceeBat=null;
+	var wBulletSpeed= 500;
+	var wFireRate=1500;
+	var weBulletSpeed=500;
+	var weFireRate=1500;
+
+	var wLvl0FR=1500
+	var wLvl1FR=1000
+	var wLvl2FR=750
+	var wLvl3FR=500
+
+	var wLvl0BS=500;
+	var wLvl1BS=750;
+	var wLvl2BS=1000;
+	var wLvl3BS=1250;
+
+	var ebSpeed=100;
+	var bSpeed=100;
 
 	// Interaction
 	var healthPackPlayer=null;
@@ -58,6 +77,8 @@ BasicGame.Game = function (game) {
 	var diamondPackPlayer=null;
 	var diamondPackEnemy=null; 
 	var applePackPlayer=null;
+	var batPlayer=null;
+	var ebatPlayer=null;
 
 	// Music
 	var music=null;
@@ -72,6 +93,7 @@ BasicGame.Game = function (game) {
   	var fastRun = null;
   	var runningSound=null;
   	var blaster=null;
+  	var hit=null;
 
 	// Settings
 	var blurX=null;
@@ -80,7 +102,6 @@ BasicGame.Game = function (game) {
 	var playerRightVelocity=400;
 	var x=null;
 	var y=null;
-
 
 	function quitGame(){
 		music.stop();
@@ -115,15 +136,42 @@ BasicGame.Game = function (game) {
 		targetPoint+=25;
 	}
 
+	function noUpgradeSpeed(){
+		player.animations.add('right', [0,1,2,3,4,5,6,7], 20, true);
+	    player.animations.add('left', [15,14,13,12,11,10,9,8], 20, true);
+	    playerLeftVelocity=-400;
+		playerRightVelocity=400;
+		blurX.blur = 0;
+    	blurY.blur = 0;
+    	runningSound.stop();
+    	runningSound=normalRun;
+    	distanceeBat=100;
+    	distanceBat=100;
+    	wFireRate=wLvl0FR;
+    	wBulletSpeed=wLvl0BS;
+    	weFireRate=wLvl0FR;
+    	weBulletSpeed=wLvl0BS;
+    	bSpeed=900;
+    	ebSpeed=300;
+	}
+
 	function firstUpgradeSpeed(){
-		player.animations.add('right', [0,1,2,3,4,5,6,7], 80, true);
-	    player.animations.add('left', [15,14,13,12,11,10,9,8], 80, true);
+		player.animations.add('right', [0,1,2,3,4,5,6,7], 60, true);
+	    player.animations.add('left', [15,14,13,12,11,10,9,8], 60, true);
 	    playerLeftVelocity=-1000;
 		playerRightVelocity=1000;
 		blurX.blur = 1;
     	blurY.blur = 0;
     	runningSound.stop();
     	runningSound=sprint;
+    	distanceeBat=200;
+    	distanceBat=200;
+    	wFireRate=wLvl1FR;
+    	wBulletSpeed=wLvl1BS;
+    	weFireRate=wLvl1FR;
+    	weBulletSpeed=wLvl1BS;
+    	bSpeed=1250;
+    	ebSpeed=800;
 	}
 
 	function secondUpgradeSpeed(){
@@ -135,6 +183,14 @@ BasicGame.Game = function (game) {
     	blurY.blur = 5;
     	runningSound.stop();
     	runningSound=fastRun;
+    	distanceeBat=300;
+    	distanceBat=300;
+    	wFireRate=wLvl2FR;
+    	wBulletSpeed=wLvl2BS;
+    	weFireRate=wLvl2FR;
+    	weBulletSpeed=wLvl2BS;
+    	bSpeed=1750;
+    	ebSpeed=1300;
 	}
 
 	function thirdUpgradeSpeed(){
@@ -146,6 +202,14 @@ BasicGame.Game = function (game) {
     	blurY.blur = 6;
     	runningSound.stop();
     	runningSound=fastRun;
+    	distanceeBat=400;
+    	distanceBat=400;
+    	wFireRate=wLvl3FR;
+    	wBulletSpeed=wLvl3BS;
+    	weFireRate=wLvl3FR;
+    	weBulletSpeed=wLvl3BS;
+    	bSpeed=3000;
+    	ebSpeed=2000;
 	}
 
 	function unpauseGame(){
@@ -157,7 +221,7 @@ BasicGame.Game = function (game) {
   	}
 
   	function moveRight(){
-  		horse.body.velocity.x=1800;
+  		horse.body.velocity.x=1200;
   		horse.animations.play('right');
   		if(!horseSound.isPlaying){
   			if(Math.abs(horse.position.x-player.position.x)<500){
@@ -169,7 +233,7 @@ BasicGame.Game = function (game) {
   	}
 
   	function moveLeft(){
-  		horse.body.velocity.x=-1800;
+  		horse.body.velocity.x=-1200;
   		horse.animations.play('left');
   		if(!horseSound.isPlaying){
   			if(Math.abs(horse.position.x-player.position.x)<500){
@@ -281,21 +345,17 @@ BasicGame.Game = function (game) {
   	}
 
   	function collectDiamond(player, diamond){
-  		// Bones = 1
-  		// Other = 2
-  		// Jewels = 10
-  		// Diamond = 20
   		if(diamond.frame==192 || diamond.frame==193 || diamond.frame==194 || diamond.frame==195){
-  			yourTreasure+=1;
+  			yourTreasure+=5;
   		}else if(diamond.frame==196 || diamond.frame==197 || diamond.frame==198 || diamond.frame==199 || diamond.frame==200
   			|| diamond.frame==201 || diamond.frame==202 || diamond.frame==203 || diamond.frame==204){
-  			yourTreasure+=2;
-  		}else if(diamond.frame==217 || diamond.frame==218 || diamond.frame==227){
-  			yourTreasure+=5;
-  		}else if(diamond.frame>=228  && diamond.frame<=243){
   			yourTreasure+=10;
-  		}else if(diamond.frame==244){
+  		}else if(diamond.frame==217 || diamond.frame==218 || diamond.frame==227){
+  			yourTreasure+=15;
+  		}else if(diamond.frame>=228  && diamond.frame<=243){
   			yourTreasure+=20;
+  		}else if(diamond.frame==244){
+  			yourTreasure+=30;
   		}
   		shine.play();
   		diamond.kill();
@@ -305,34 +365,48 @@ BasicGame.Game = function (game) {
 
   	function eCollectDiamond(horse, diamond){
   		if(diamond.frame==192 || diamond.frame==193 || diamond.frame==194 || diamond.frame==195){
-  			enemiesTreasure+=1;
+  			enemiesTreasure+=5;
   		}else if(diamond.frame==196 || diamond.frame==197 || diamond.frame==198 || diamond.frame==199 || diamond.frame==200
   			|| diamond.frame==201 || diamond.frame==202 || diamond.frame==203 || diamond.frame==204){
-  			enemiesTreasure+=2;
-  		}else if(diamond.frame==217 || diamond.frame==218 || diamond.frame==227){
-  			enemiesTreasure+=5;
-  		}else if(diamond.frame==228 || diamond.frame==243){
   			enemiesTreasure+=10;
-  		}else if(diamond.frame==244){
+  		}else if(diamond.frame==217 || diamond.frame==218 || diamond.frame==227){
+  			enemiesTreasure+=15;
+  		}else if(diamond.frame==228 || diamond.frame==243){
   			enemiesTreasure+=20;
+  		}else if(diamond.frame==244){
+  			enemiesTreasure+=30;
   		}
   		diamond.kill();
   		spawnDiamond();
   	}
 
 
-  	function loseHP(){
+  	function loseHP(player){
+  		if(healthLevel>10){
+  			healthLevel-=5;
+  		}else if(healthLevel<=10){
+  			healthLevel=0;
+ 			music.stop();
+      		game.state.start('GameOver');
+  		}else{
 
-
+  		}
   	}
 
-
-  	function loseSpeed(){
-
+  	function loseSpeed(player){
+  		if(upgradeLevel==3){
+  			upgradeLevel=2;
+  			secondUpgradeSpeed();
+  		}else if(upgradeLevel==2){
+  			upgradeLevel=1;
+  			firstUpgradeSpeed();
+  		}else if(upgradeLevel==1){
+  			noUpgradeSpeed();
+  			upgradeLevel=0;
+  		}else{
+  		}
   	}
 
-
-  	
   	return {
     	create: function () {
       	// Set world
@@ -387,6 +461,7 @@ BasicGame.Game = function (game) {
   		runningSound = normalRun;
   		sprint = game.add.audio('sprint');
   		sprint.volume = 0.6;
+  		hit = game.add.audio('hit');
 
 	    // Player
 	    player = game.add.sprite(50, 480, 'player');
@@ -397,9 +472,19 @@ BasicGame.Game = function (game) {
 	    player.body.setSize(33,60,15,10);
 	    // Make it bounce off of the world bounds.
 	    player.body.collideWorldBounds = true;
-	    // Enables camera to follow player.
-	    game.camera.follow(player);
-	    healthLevel=50;
+	    	    // Animation movements
+	    	// Start
+	    player.animations.add('right', [0,1,2,3,4,5,6,7], 20, true);
+	    player.animations.add('left', [15,14,13,12,11,10,9,8], 20, true);
+
+	    player.animations.play('right');
+	    player.animations.stop();
+
+      	blurX = game.add.filter('BlurX');
+		blurY = game.add.filter('BlurY');
+
+
+	    healthLevel=100;
 	    upgradeLevel=0;
 
 	    // Enemy
@@ -410,46 +495,32 @@ BasicGame.Game = function (game) {
 	    horse.animations.add('left', [114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167], 180, true);
 
 	    // Enemies' partners
-	    bat = game.add.sprite(500, 200, 'bat');
+	    	// HP damager bat
+	    bat = game.add.sprite(1000, 200, 'butterfly', 0);
 	    game.physics.enable(bat, Phaser.Physics.ARCADE);
-	    bat.animations.add('fly', [0,1,2,3,4,5,6,7,8,9,8,7,6,5,4,3,2], 20, true);
+	    bat.animations.add('fly', [0,1,2], 20, true);
 	    weapon = game.add.weapon(30, 'ammo');
 	    weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-      	weapon.bulletSpeed = 500;
-      	weapon.fireRate = 1500;
-     	weapon.bulletAngleVariance=2;
+      	weapon.bulletSpeed = wBulletSpeed;
+      	weapon.fireRate = wFireRate;
+     	weapon.bulletAngleVariance=3;
       	weapon.trackSprite(bat, 20, 20);
       	weapon.fireAngle = 90;
-
-
-      	ebat = game.add.sprite(300, 200, 'bat');
+      		// Speed damager bat
+      	ebat = game.add.sprite(1500, 200, 'butterfly', 10);
 	    game.physics.enable(ebat, Phaser.Physics.ARCADE);
-	    ebat.animations.add('fly', [0,1,2,3,4,5,6,7,8,9,8,7,6,5,4,3,2], 20, true);
-	    eweapon = game.add.weapon(30, 'ammo2');
+	    ebat.animations.add('fly', [0,1,2,3,4,5,6,7,8,9,10,11], 30, true);
+	   	eweapon = game.add.weapon(30, 'ammo2');
 	    eweapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-      	eweapon.bulletSpeed = 500;
-      	eweapon.fireRate = 1500;
-     	eweapon.bulletAngleVariance=2;
+      	eweapon.bulletSpeed = weBulletSpeed;
+      	eweapon.fireRate = weFireRate;
+     	eweapon.bulletAngleVariance=3;
       	eweapon.trackSprite(ebat, 20, 20);
       	eweapon.fireAngle = 90;
-
-      	//weapon.bulletAngleOffset = 180;
-      	//weapon.rotation = game.physics.arcade.moveToObject(weapon, player, 500);
 
       	// Starting treasure
       	yourTreasure=0;
       	enemiesTreasure=0;
-
-	    // Animation movements
-	    	// Start
-	    player.animations.add('right', [0,1,2,3,4,5,6,7], 20, true);
-	    player.animations.add('left', [15,14,13,12,11,10,9,8], 20, true);
-
-	    player.animations.play('right');
-	    player.animations.stop();
-
-      	blurX = game.add.filter('BlurX');
-		blurY = game.add.filter('BlurY');
 
 		// Food
 		item = game.add.sprite(350, 480, 'item');
@@ -466,10 +537,7 @@ BasicGame.Game = function (game) {
 		game.physics.enable(diamond, Phaser.Physics.ARCADE);
 		diamond.frame=233;
 
-
-		// Lightning
-		//lightning = game.add.sprite(500, 400, 'lightning');
-		//game.physics.enable(lightning, Phaser.Physics.ARCADE);
+		noUpgradeSpeed();
 
 		// Start
     	blurX.blur = 0;
@@ -477,25 +545,13 @@ BasicGame.Game = function (game) {
 
 	    // Camera
 	    game.camera.follow(player);
-	    // initial points
-	   	targetPoint=0;
 
-
-		// diamond = game.add.group();
-		// diamond.enableBody = true;
-		// spawnDiamond();
-		// game.time.events.add(Phaser.Timer.SECOND * 3, spawnDiamond, this);
-
-		// health = game.add.group();
-		// health.enableBody = true;
-		// spawnHP();
-		// game.time.events.add(Phaser.Timer.SECOND * 3, spawnHP, this);
    	},
 
     // Debug
     render: function(){
     	//game.debug.bodyInfo(player, 32, 400); 
-    	game.debug.bodyInfo(horse, 32, 410);
+    	//game.debug.bodyInfo(horse, 32, 410);
     	//game.debug.body(horse);
     	//game.debug.body(player);
     	game.debug.text('Health:  ' + healthLevel + '/' + healthTotal, 30, 30);
@@ -503,8 +559,8 @@ BasicGame.Game = function (game) {
         game.debug.text('Enemies\' Treasures: ' + enemiesTreasure, 30, 90);
         game.debug.text('Your Treasures: ' + yourTreasure, 30, 70);
         game.debug.text('Potion increases speed!', 320, 30);
-        game.debug.text('Apple raises HP', 350, 50);
-        game.debug.text('Find the diamond', 345, 70);
+        game.debug.text('Food raises HP', 350, 50);
+        game.debug.text('Find the Jewels', 345, 70);
         game.debug.text('Time: ' + timeLevel, 694, 20);
     },
 
@@ -516,20 +572,18 @@ BasicGame.Game = function (game) {
 		diamondPackEnemy = game.physics.arcade.collide(horse, diamond, eCollectDiamond, null, this);
 		batPlayer = game.physics.arcade.overlap(weapon.bullets, player, loseHP, null, this);
 		ebatPlayer = game.physics.arcade.overlap(eweapon.bullets, player, loseSpeed, null, this);
-		// Auto spawn
-
-		// Bat animation
-		bat.animations.play('fly');
-
 
 		// Sound enhancement
       	if(gulp.isPlaying){
 			upgrade.play();
       	}
 
+      	// Bat attack distance will increase as you level up
 		// Bat
+			// Bat animation
+		bat.animations.play('fly');
 		if(!laser.isPlaying){
-			if(Math.abs(player.position.x-bat.position.x)<50){
+			if(Math.abs(player.position.x-bat.position.x)<distanceBat){
 				if(weapon.fire())
 					laser.play();
 			}
@@ -538,12 +592,23 @@ BasicGame.Game = function (game) {
 		// EBat
 		ebat.animations.play('fly');
 		if(!blaster.isPlaying){
-			if(Math.abs(player.position.x-ebat.position.x)<50){
+			if(Math.abs(player.position.x-ebat.position.x)<distanceeBat){
 				if(eweapon.fire())
 					blaster.play();
 			}
 		}
+
+      	weapon.bulletSpeed = wBulletSpeed;
+      	weapon.fireRate = wFireRate;
+      	eweapon.bulletSpeed = weBulletSpeed;
+      	eweapon.fireRate = weFireRate;
+
+		bat.position.y = 200;
+		ebat.position.y=250;
 		
+		game.physics.arcade.moveToObject(bat, player, bSpeed, 0)
+		game.physics.arcade.moveToObject(ebat, player, ebSpeed, 0)
+
 
 		// Horse
 		if(horse.body.position.x == 27 && horse.body.position.x<22000){
@@ -572,17 +637,12 @@ BasicGame.Game = function (game) {
 		}
 
 
-
       	//Stat:
         timeLevel = this.game.time.totalElapsedSeconds();
 
       	//  Reset the player's velocity/movement
     	player.body.velocity.x=0;
     	player.body.velocity.y=0;
-
-    	// if(upgradeLevel==0){
-    	// 	spawnPotion();
-    	// }
 
 
     	// KEY Control

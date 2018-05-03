@@ -29,29 +29,20 @@ BasicGame.Preloader = function (game) {
 	        game.load.spritesheet('lightning', 'assets/image/spritesheet/lightning.png', 54.5 ,130)
 	        game.load.spritesheet('bat', 'assets/image/spritesheet/bat.png', 33, 31);
 	        game.load.spritesheet('horse', 'assets/image/spritesheet/horse.png', 34.5, 34)
-
-	        //game.load.spritesheet('enemies', 'assets/image/spritesheet/robots.png', 55, 65);
-	        //game.load.spritesheet('explosion', 'assets/image/spritesheet/explosion.png', 64, 64);
-
+	        game.load.spritesheet('butterfly', 'assets/image/spritesheet/butterfly.png', 32, 32);
 	        // Map
 	        game.load.image('earth', 'assets/image/background/2wideWorld.png');
 	        game.load.image('summer', 'assets/image/background/Summer.png');
 	        game.load.image('winter', 'assets/image/background/Winter.png');
 	        game.load.image('water', 'assets/image/background/Water.png');
 	        game.load.image('spring', 'assets/image/background/Spring.png');
-	        
-	        //game.load.image('mapTiles', 'assets/map/beach_tileset.png');
-	        //game.load.tilemap('island', 'assets/map/island.tmx', null, Phaser.Tilemap.TILED_TMX);
-
-     		//game.load.tilemap('level1', 'assets/map/level1.json', null, Phaser.Tilemap.TILED_JSON);
 
 	        // Items:
 			game.load.spritesheet('item', 'assets/image/spritesheet/items.png', 48, 48, 250);
 			//game.load.spritesheet('item', 'assets/image/spritesheet/items.png', 48, 48, 18);
 			game.load.spritesheet('ammo', 'assets/image/spritesheet/ammo.png', 20, 20, 1);
 			game.load.image('ammo2', 'assets/image/game/bullet.png');
-	        game.load.image('healthPack', 'assets/image/game/health.png');
-	        game.load.image('armorPack', 'assets/image/game/armor.png');
+
 	        game.load.image('target', 'assets/image/game/target.png');
 	        game.load.image('upgradePack', 'assets/image/game/upgrade.png');
 	        game.load.image('diamond', 'assets/image/game/diamond.png');
@@ -73,6 +64,7 @@ BasicGame.Preloader = function (game) {
 			game.load.audio('normalRun', ['assets/sound/normalRun.mp3']);
 			game.load.audio('sprint', ['assets/sound/sprint.mp3']);
 			game.load.audio('fastRun', ['assets/sound/fastRun.mp3']);
+			game.load.audio('hit', ['assets/sound/swish.mp3']);
 
 	        game.load.script('BlurX', 'https://cdn.rawgit.com/photonstorm/phaser-ce/master/filters/BlurX.js');
     		game.load.script('BlurY', 'https://cdn.rawgit.com/photonstorm/phaser-ce/master/filters/BlurY.js');

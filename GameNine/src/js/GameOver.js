@@ -55,9 +55,9 @@ BasicGame.GameOver = function (game) {
 			gameOverPageBackground = game.add.sprite(-10, 80, 'gameOverPageBG');
 			addQuake();
 			var topTextStyle = { font: "30px Verdana", fill: "#666666", align: "center" };
-    	    var topText = game.add.text(game.world.centerX, 15, "You dead!~", topTextStyle );
+    	    var topText = game.add.text(game.world.centerX, 15, "You are dead!~", topTextStyle );
             var deadTextStyle = { font: "25px Verdana", fill: "#666666", align: "center" };
-            var deadTutorial = game.add.text(300, 430, "Avoid zombies~", deadTextStyle );
+            var deadTutorial = game.add.text(300, 430, "Avoid the beams!~", deadTextStyle );
 
             topText.fixedToCamera = true;
     	    topText.anchor.setTo( 0.5, 0.0 );
