@@ -48,7 +48,7 @@ BasicGame.Preloader = function (game) {
 	        // Items:
 			game.load.spritesheet('item', 'assets/image/spritesheet/items.png', 48, 48, 250);
 			//game.load.spritesheet('item', 'assets/image/spritesheet/items.png', 48, 48, 18);
-
+			game.load.spritesheet('ammo', 'assets/image/spritesheet/ammo.png', 20, 20);
 	        game.load.image('bullet', 'assets/image/game/bullet.png');
 	        game.load.image('healthPack', 'assets/image/game/health.png');
 	        game.load.image('armorPack', 'assets/image/game/armor.png');

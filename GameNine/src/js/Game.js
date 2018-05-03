@@ -43,6 +43,7 @@ BasicGame.Game = function (game) {
 	// Enemies:
 	var bat=null;
 	var horse=null;
+	var weapon=null;
 
 	// Interaction
 	var healthPackPlayer=null;
@@ -97,12 +98,6 @@ BasicGame.Game = function (game) {
 		yourTreasure+=1;
 		diamond.kill();
 		targetPoint+=25;
-		// Refresh-mechanisms until iteration
-		playerLeftVelocity=-400;
-		playerRightVelocity=400;
-		yourTreasure=0;
-		upgradeLevel=0;
-		healthLevel=50;
 	}
 
 	function collectHP(player, item){
@@ -229,6 +224,16 @@ BasicGame.Game = function (game) {
 	    bat = game.add.sprite(500, 200, 'bat');
 	    game.physics.enable(bat, Phaser.Physics.ARCADE);
 	    bat.animations.add('fly', [0,1,2,3,4,5,6,7,8,9,8,7,6,5,4,3,2], 20, true);
+	    weapon = game.add.weapon(30, 'ammo');
+	    weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+      	weapon.bulletSpeed = 500;
+      	weapon.fireRate = 1000;
+     	weapon.bulletAngleVariance=2;
+      	weapon.trackSprite(bat, 20, 20);
+      	weapon.fireAngle = 90;
+      	//weapon.bulletAngleOffset = 180;
+      	//weapon.rotation = game.physics.arcade.moveToObject(weapon, player, 500);
+
 
 	    // Animation movements
 	    	// Start
@@ -306,6 +311,8 @@ BasicGame.Game = function (game) {
 				upgradeLevel=1;
 			}
 		}
+
+		weapon.fire();
 
       	//Stat:
         timeLevel = this.game.time.totalElapsedSeconds();
