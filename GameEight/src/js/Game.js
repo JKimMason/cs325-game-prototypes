@@ -63,6 +63,7 @@ BasicGame.Game = function (game) {
 	var playerLeftVelocity=-400;
 	var playerRightVelocity=400;
 
+
 	function quitGame(){
 		music.stop();
 	    game.state.start('Menu');
@@ -70,6 +71,15 @@ BasicGame.Game = function (game) {
 
 	function winGame(){
 	    music.stop();
+	   	player.animations.add('right', [0,1,2,3,4,5,6,7], 20, true);
+	    player.animations.add('left', [15,14,13,12,11,10,9,8], 20, true);
+	   	blurX.blur = 0;
+    	blurY.blur = 0;
+    	playerLeftVelocity=-400;
+		playerRightVelocity=400;
+		yourTreasure=0;
+		upgradeLevel=0;
+		healthLevel=50;
 	    game.state.start('Win');
 	}
 
@@ -224,6 +234,7 @@ BasicGame.Game = function (game) {
 	    	// Start
 	    player.animations.add('right', [0,1,2,3,4,5,6,7], 20, true);
 	    player.animations.add('left', [15,14,13,12,11,10,9,8], 20, true);
+
 	    player.animations.play('right');
 	    player.animations.stop();
 
