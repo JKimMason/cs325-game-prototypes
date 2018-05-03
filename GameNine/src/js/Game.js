@@ -2,24 +2,24 @@
 BasicGame.Game = function (game) {
 	//Map
 	var land=null;
-  	var land2=null;
-  	var land3=null;
-  	var land4=null;
-  	var land5=null;
-  	var land6=null;
-  	var land7=null;
-  	var land8=null;  	
-  	var land9=null;
-  	var land10=null;
-  	var Sumland1=null; 
-  	var Sumland2=null;
-  	var Sumland3=null;  
-  	var Sumland4=null; 
-  	var Sumland5=null;
-  	var Sumland6=null; 
-  	var Sumland7=null; 
-  	var Sumland8=null;
-  	var Sumland9=null; 
+  var land2=null;
+  var land3=null;
+  var land4=null;
+  var land5=null;
+  var land6=null;
+	var land7=null;
+  var land8=null;  	
+  var land9=null;
+	var land10=null;
+	var Sumland1=null; 
+	var Sumland2=null;
+  var Sumland3=null;  
+  var Sumland4=null; 
+  var Sumland5=null;
+  var Sumland6=null; 
+  var Sumland7=null; 
+  var Sumland8=null;
+  var Sumland9=null; 
 	var Sumland10=null;
 
 	var player=null;
@@ -89,10 +89,10 @@ BasicGame.Game = function (game) {
 	var laser=null;
 	var horseSound=null;
 	var normalRun = null;
-  	var fastRun = null;
-  	var runningSound=null;
-  	var blaster=null;
-  	var hit=null;
+  var fastRun = null;
+  var runningSound=null;
+  var blaster=null;
+  var hit=null;
 
 	// Settings
 	var blurX=null;
@@ -108,8 +108,8 @@ BasicGame.Game = function (game) {
 	}
 
 	function winGame(){
-	    music.stop();
-	   	player.animations.add('right', [0,1,2,3,4,5,6,7], 20, true);
+	music.stop();
+	   player.animations.add('right', [0,1,2,3,4,5,6,7], 20, true);
 	    player.animations.add('left', [15,14,13,12,11,10,9,8], 20, true);
 	   	blurX.blur = 0;
     	blurY.blur = 0;
