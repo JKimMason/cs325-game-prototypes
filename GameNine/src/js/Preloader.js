@@ -48,13 +48,15 @@ BasicGame.Preloader = function (game) {
 	        // Items:
 			game.load.spritesheet('item', 'assets/image/spritesheet/items.png', 48, 48, 250);
 			//game.load.spritesheet('item', 'assets/image/spritesheet/items.png', 48, 48, 18);
-			game.load.spritesheet('ammo', 'assets/image/spritesheet/ammo.png', 20, 20);
-	        game.load.image('bullet', 'assets/image/game/bullet.png');
+			game.load.spritesheet('ammo', 'assets/image/spritesheet/ammo.png', 20, 20, 1);
+			game.load.image('ammo2', 'assets/image/game/bullet.png');
 	        game.load.image('healthPack', 'assets/image/game/health.png');
 	        game.load.image('armorPack', 'assets/image/game/armor.png');
 	        game.load.image('target', 'assets/image/game/target.png');
 	        game.load.image('upgradePack', 'assets/image/game/upgrade.png');
-
+	        game.load.image('diamond', 'assets/image/game/diamond.png');
+	        game.load.image('apple', 'assets/image/game/apple.png');
+	        game.load.image('health2', 'assets/image/game/health2.png');
 
 
 	        // Sound:
@@ -65,7 +67,12 @@ BasicGame.Preloader = function (game) {
 	        game.load.audio('upgrade', ['assets/sound/upgrade.mp3']);
 	        game.load.audio('passBullet', ['assets/sound/passBullet.mp3']);
 	        game.load.audio('diamondSound', ['assets/sound/diamondSound.mp3']);
-
+			game.load.audio('laser', ['assets/sound/laser.mp3']);
+			game.load.audio('blaster', ['assets/sound/blaster.mp3']);
+			game.load.audio('horse', ['assets/sound/horse.mp3']);
+			game.load.audio('normalRun', ['assets/sound/normalRun.mp3']);
+			game.load.audio('sprint', ['assets/sound/sprint.mp3']);
+			game.load.audio('fastRun', ['assets/sound/fastRun.mp3']);
 
 	        game.load.script('BlurX', 'https://cdn.rawgit.com/photonstorm/phaser-ce/master/filters/BlurX.js');
     		game.load.script('BlurY', 'https://cdn.rawgit.com/photonstorm/phaser-ce/master/filters/BlurY.js');
