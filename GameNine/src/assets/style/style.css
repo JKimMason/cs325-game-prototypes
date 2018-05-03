@@ -1,0 +1,28 @@
+body,html{
+	height: 100%;
+	width: 100%;
+}
+body
+{
+	color: black;
+	font-family: 'Merriweather', 'Helvetica Neue', Arial, sans-serif;
+}
+#readme
+{
+	margin-top: 50px;
+}
+
+#readme.h2
+{
+	color: #00FFFF;
+}
+li
+{
+	color: black;
+}
+
+h2 {
+  font-weight: bold;
+  color: pink;
+  font-size: 32px;
+}
